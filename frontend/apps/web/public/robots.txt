@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /login/
+Disallow: /signup/
+Disallow: /onboarding/
+Disallow: /verify-email/
+Disallow: /forgot-password/
+Disallow: /reset-password/
+Disallow: /api/
+
+Sitemap: https://www.nairacloud.xyz/sitemap.xml

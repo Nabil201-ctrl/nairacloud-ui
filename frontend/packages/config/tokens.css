@@ -1,0 +1,56 @@
+:root {
+  /* Page chrome - Slate grey theme */
+  --bg: #1e2024;
+  --sidebar: #1a1c21;
+  --topnav: #1a1c21;
+
+  /* Surfaces */
+  --main: #25272c;
+  --card: #1f2126;
+  --surface: #2a2d33;
+  --surface-secondary: #2a2d33;
+  --surface-hover: #33373e;
+  --nav-active: #2d4a43;
+  --nav-hover: #25282e;
+  --control: #24272d;
+  --control-active: #3a3f47;
+  --segment: #282b31;
+  --segment-active: #2d4a43;
+  --ring-track: #363a42;
+  --mobile-nav: #1f2126;
+
+  /* Borders — extremely subtle */
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-faint: rgba(255, 255, 255, 0.03);
+  --border-control: #3d4149;
+  --border-segment: #30343c;
+  --border-secondary: #363a42;
+
+  /* Text */
+  --text: #f0f1f3;
+  --text-secondary: #a8adb5;
+  --text-muted: #6e747d;
+  --muted: #6e747d;
+  --text-disabled: #545961;
+  --text-axis: #5a6068;
+  --text-hover: #c8ccd2;
+
+  /* Accent — green, use sparingly (charts, rings, live status, selected tabs) */
+  --accent: #4ec9b0;
+  --accent-hover: #6dd3c0;
+  --accent-fg: #000000;
+
+  /* Semantic */
+  --danger: #f48771;
+  --warning: #cca700;
+  --info: #3794ff;
+  --success: #4ec9b0;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-mobile-nav: 16px;
+}

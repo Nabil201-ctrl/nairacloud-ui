@@ -1,0 +1,11 @@
+.vercel
+.env*
+node_modules
+.next
+out
+dist
+*.tsbuildinfo
+*.log
+.DS_Store
+playwright-report
+coverage

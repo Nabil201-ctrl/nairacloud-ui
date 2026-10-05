@@ -1,0 +1,9 @@
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+.env*.local
+coverage/
+playwright-report/
+.vercel

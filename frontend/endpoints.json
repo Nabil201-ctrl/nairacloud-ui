@@ -1,0 +1,1800 @@
+{
+  "metadata": {
+    "name": "NairaCloud API Endpoints",
+    "version": "v1",
+    "baseUrl": "https://api.nairacloud.xyz/v1",
+    "websocketUrl": "wss://api.nairacloud.xyz/ws",
+    "adminFrontend": "https://admin.nairacloud.xyz",
+    "generated": "2026-09-22",
+    "authentication": {
+      "method": "cookie",
+      "cookieName": "nc_access",
+      "description": "JWT stored in httpOnly cookie. Shared across .nairacloud.xyz subdomains.",
+      "attributes": {
+        "httpOnly": true,
+        "secure": true,
+        "sameSite": "Lax",
+        "domain": ".nairacloud.xyz"
+      }
+    }
+  },
+  "endpoints": {
+    "Authentication": {
+      "basePath": "/v1/auth",
+      "requiresAuth": false,
+      "routes": {
+        "POST /v1/auth/signup": {
+          "description": "Register new user and send 6-digit email OTP",
+          "requestBody": {
+            "email": "ada@example.com",
+            "password": "Str0ngPass!",
+            "name": "Ada Lovelace",
+            "referralCode": "nabil201"
+          },
+          "response": {
+            "message": "Check your email for a verification code."
+          }
+        },
+        "POST /v1/auth/verify-email": {
+          "description": "Verify email with 6-digit OTP and start a session",
+          "requestBody": {
+            "email": "ada@example.com",
+            "otp": "123456"
+          },
+          "response": {
+            "message": "Email verified. You can continue.",
+            "user": {
+              "id": "user_abc123",
+              "email": "ada@example.com",
+              "name": "Ada Lovelace",
+              "role": "CUSTOMER",
+              "status": "ACTIVE",
+              "orgId": "org_def456",
+              "emailVerifiedAt": "2026-09-21T10:00:00.000Z",
+              "twoFactorEnabled": false,
+              "createdAt": "2026-09-21T09:00:00.000Z"
+            },
+            "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+            "csrf": "csrf_token_a1b2c3d4"
+          }
+        },
+        "POST /v1/auth/resend-verification": {
+          "description": "Resend the email verification OTP",
+          "requestBody": {
+            "email": "ada@example.com"
+          },
+          "response": {
+            "message": "If the account exists and is unverified, a code was sent."
+          }
+        },
+        "POST /v1/auth/login": {
+          "description": "Login (returns JWT + refresh cookies)",
+          "requestBody": {
+            "email": "ada@example.com",
+            "password": "Str0ngPass!"
+          },
+          "response": {
+            "user": {
+              "id": "user_abc123",
+              "email": "ada@example.com",
+              "name": "Ada Lovelace",
+              "role": "CUSTOMER",
+              "status": "ACTIVE",
+              "orgId": "org_def456",
+              "emailVerifiedAt": "2026-09-21T10:00:00.000Z",
+              "twoFactorEnabled": false,
+              "createdAt": "2026-09-21T09:00:00.000Z"
+            }
+          },
+          "cookiesSet": ["nc_access", "nc_refresh", "nc_csrf"]
+        },
+        "POST /v1/auth/logout": {
+          "description": "Logout (clears cookies)",
+          "requiresAuth": true,
+          "response": {
+            "message": "Logged out"
+          },
+          "cookiesCleared": ["nc_access", "nc_refresh", "nc_csrf"]
+        },
+        "POST /v1/auth/refresh": {
+          "description": "Refresh access token using refresh cookie",
+          "requiresAuth": false,
+          "response": {
+            "message": "Token refreshed"
+          },
+          "cookiesSet": ["nc_access", "nc_refresh", "nc_csrf"]
+        },
+        "POST /v1/auth/forgot-password": {
+          "description": "Request password reset",
+          "requestBody": {
+            "email": "ada@example.com"
+          },
+          "response": {
+            "message": "If an account exists, a reset link was sent."
+          }
+        },
+        "POST /v1/auth/reset-password": {
+          "description": "Reset password with token",
+          "requestBody": {
+            "token": "reset_token_x9y8z7",
+            "password": "NewStr0ngPass!"
+          },
+          "response": {
+            "message": "Password updated. You can now log in."
+          }
+        },
+        "GET /v1/auth/me": {
+          "description": "Get current user profile",
+          "requiresAuth": true,
+          "response": {
+            "id": "user_abc123",
+            "email": "ada@example.com",
+            "name": "Ada Lovelace",
+            "role": "CUSTOMER",
+            "status": "ACTIVE",
+            "orgId": "org_def456",
+            "emailVerifiedAt": "2026-09-21T10:00:00.000Z",
+            "twoFactorEnabled": false,
+            "createdAt": "2026-09-21T09:00:00.000Z"
+          }
+        }
+      }
+    },
+    "Users": {
+      "basePath": "/v1/users",
+      "requiresAuth": true,
+      "routes": {
+        "GET /v1/users/me": {
+          "description": "Get current user profile",
+          "response": {
+            "id": "user_abc123",
+            "email": "ada@example.com",
+            "name": "Ada Lovelace",
+            "role": "CUSTOMER",
+            "status": "ACTIVE",
+            "orgId": "org_def456",
+            "emailVerifiedAt": "2026-09-21T10:00:00.000Z",
+            "twoFactorEnabled": false,
+            "createdAt": "2026-09-21T09:00:00.000Z"
+          }
+        },
+        "PATCH /v1/users/me": {
+          "description": "Update profile",
+          "requestBody": {
+            "name": "Ada Byron"
+          },
+          "response": {
+            "id": "user_abc123",
+            "email": "ada@example.com",
+            "name": "Ada Byron"
+          }
+        },
+        "PATCH /v1/users/me/password": {
+          "description": "Change password",
+          "requestBody": {
+            "currentPassword": "Str0ngPass!",
+            "newPassword": "NewStr0ngPass!"
+          },
+          "response": {
+            "message": "Password updated"
+          }
+        },
+        "DELETE /v1/users/me": {
+          "description": "Delete account",
+          "response": {
+            "message": "Account deleted"
+          }
+        },
+        "GET /v1/users/me/notifications-settings": {
+          "description": "Get notification settings",
+          "response": {
+            "id": "notifsettings_xyz",
+            "userId": "user_abc123",
+            "emailInstanceAlerts": true,
+            "emailBillingAlerts": true,
+            "emailMarketing": false,
+            "inAppAlerts": true
+          }
+        },
+        "PATCH /v1/users/me/notifications-settings": {
+          "description": "Update notification settings",
+          "requestBody": {
+            "emailInstanceAlerts": false,
+            "emailBillingAlerts": true,
+            "emailMarketing": true,
+            "inAppAlerts": true
+          },
+          "response": {
+            "id": "notifsettings_xyz",
+            "userId": "user_abc123",
+            "emailInstanceAlerts": false,
+            "emailBillingAlerts": true,
+            "emailMarketing": true,
+            "inAppAlerts": true
+          }
+        }
+      }
+    },
+    "Admin": {
+      "basePath": "/v1/admin",
+      "requiresAuth": true,
+      "roles": ["ADMIN"],
+      "routes": {
+        "GET /v1/admin/overview": {
+          "description": "Dashboard overview stats",
+          "response": {
+            "users": 1250,
+            "instances": 87,
+            "running": 64,
+            "nodes": [
+              {
+                "id": "node_abc",
+                "name": "node-1",
+                "status": "ONLINE",
+                "allocatedRamMb": 4096,
+                "totalRamMb": 32768,
+                "usedRamMb": 8192
+              }
+            ],
+            "revenue24hNgn": 150000,
+            "payments24h": 23
+          }
+        },
+        "GET /v1/admin/nodes": {
+          "description": "List all nodes",
+          "response": [
+            {
+              "id": "node_abc",
+              "name": "node-1",
+              "provider": "aws",
+              "region": "us-east-1",
+              "hostname": "192.0.2.1",
+              "agentVersion": "1.2.0",
+              "ip": "192.0.2.1",
+              "agentUrl": "http://192.0.2.1:4477",
+              "onboardError": null,
+              "onboardedAt": "2026-09-20T08:00:00.000Z",
+              "totalCpu": 8,
+              "totalRamMb": 32768,
+              "totalStorageGb": 500,
+              "reservedCpu": 1,
+              "reservedRamMb": 4096,
+              "reservedStorageGb": 50,
+              "allocatedCpu": 2,
+              "allocatedRamMb": 8192,
+              "allocatedStorageGb": 60,
+              "sellPlan": null,
+              "status": "ONLINE",
+              "lastHeartbeatAt": "2026-09-22T07:00:00.000Z",
+              "lastHeartbeatMeta": { "usedRamMb": 8192 },
+              "commandLog": null,
+              "createdAt": "2026-09-20T08:00:00.000Z",
+              "updatedAt": "2026-09-22T07:00:00.000Z",
+              "_count": { "instances": 3 }
+            }
+          ]
+        },
+        "POST /v1/admin/nodes/onboard": {
+          "description": "Onboard new node (SSH, install Docker + node agent, set online)",
+          "requestBody": {
+            "name": "node-2",
+            "provider": "digitalocean",
+            "region": "nyc-1",
+            "ip": "192.0.2.2",
+            "sshUser": "root",
+            "sshPort": 22,
+            "sshPassword": "password123"
+          },
+          "response": {
+            "id": "node_def",
+            "name": "node-2",
+            "provider": "digitalocean",
+            "region": "nyc-1",
+            "hostname": null,
+            "agentVersion": null,
+            "ip": "192.0.2.2",
+            "agentUrl": null,
+            "agentHmacSecret": "encrypted_hmac_secret",
+            "sshUser": "root",
+            "sshPort": 22,
+            "sshPasswordEnc": "encrypted_password",
+            "sshKeyPrivateEnc": null,
+            "onboardError": null,
+            "onboardedAt": null,
+            "totalCpu": 8,
+            "totalRamMb": 32768,
+            "totalStorageGb": 500,
+            "reservedCpu": 1,
+            "reservedRamMb": 4096,
+            "reservedStorageGb": 50,
+            "sellPlan": null,
+            "allocatedCpu": 0,
+            "allocatedRamMb": 0,
+            "allocatedStorageGb": 0,
+            "commandLog": null,
+            "status": "PROVISIONING",
+            "lastHeartbeatAt": null,
+            "lastHeartbeatMeta": null,
+            "createdAt": "2026-09-22T07:10:00.000Z",
+            "updatedAt": "2026-09-22T07:10:00.000Z"
+          }
+        },
+        "POST /v1/admin/nodes/probe": {
+          "description": "Probe node via SSH to detect specs before onboarding",
+          "requestBody": {
+            "ip": "192.0.2.1",
+            "sshUser": "root"
+          },
+          "response": {
+            "ip": "192.0.2.1",
+            "cpu": 4,
+            "ramMb": 8192,
+            "storageGb": 160,
+            "os": "Ubuntu 22.04.5 LTS",
+            "arch": "x86_64",
+            "dockerInstalled": true,
+            "containers": [
+              { "id": "a1b2c3d4", "name": "nginx", "image": "nginx:latest", "status": "Up 5 hours" }
+            ],
+            "useCase": "Two small boxes: best to split into halves",
+            "plans": [
+              {
+                "label": "Sell whole box",
+                "slices": [{ "cpu": 4, "ramMb": 8192, "storageGb": 160 }]
+              },
+              {
+                "label": "Split into 4 equal halves",
+                "slices": [{ "cpu": 1, "ramMb": 2048, "storageGb": 40 }]
+              }
+            ],
+            "transcript": [
+              { "cmd": "nproc", "out": "4", "code": 0 },
+              { "cmd": "grep '^MemTotal' /proc/meminfo", "out": "MemTotal:        8192000 kB", "code": 0 }
+            ]
+          }
+        },
+        "GET /v1/admin/nodes/:id": {
+          "description": "Get node details",
+          "response": {
+            "id": "node_abc",
+            "name": "node-1",
+            "provider": "aws",
+            "region": "us-east-1",
+            "hostname": "192.0.2.1",
+            "agentVersion": "1.2.0",
+            "ip": "192.0.2.1",
+            "agentUrl": "http://192.0.2.1:4477",
+            "onboardError": null,
+            "onboardedAt": "2026-09-20T08:00:00.000Z",
+            "totalCpu": 8,
+            "totalRamMb": 32768,
+            "totalStorageGb": 500,
+            "reservedCpu": 1,
+            "reservedRamMb": 4096,
+            "reservedStorageGb": 50,
+            "allocatedCpu": 2,
+            "allocatedRamMb": 8192,
+            "allocatedStorageGb": 60,
+            "sellPlan": null,
+            "status": "ONLINE",
+            "lastHeartbeatAt": "2026-09-22T07:00:00.000Z",
+            "lastHeartbeatMeta": { "usedRamMb": 8192 },
+            "commandLog": null,
+            "instances": [
+              { "id": "inst_001", "hostname": "web-01", "image": "ubuntu-24.04", "status": "RUNNING", "ip": "10.0.1.10" }
+            ],
+            "createdAt": "2026-09-20T08:00:00.000Z",
+            "updatedAt": "2026-09-22T07:00:00.000Z"
+          }
+        },
+        "POST /v1/admin/nodes/:id/drain": {
+          "description": "Drain a node (set to DRAINING status)",
+          "response": {
+            "id": "node_abc",
+            "name": "node-1",
+            "status": "DRAINING",
+            "totalCpu": 8,
+            "totalRamMb": 32768,
+            "totalStorageGb": 500,
+            "reservedCpu": 1,
+            "reservedRamMb": 4096,
+            "reservedStorageGb": 50,
+            "allocatedCpu": 2,
+            "allocatedRamMb": 8192,
+            "allocatedStorageGb": 60,
+            "provider": "aws",
+            "region": "us-east-1",
+            "hostname": "192.0.2.1",
+            "ip": "192.0.2.1",
+            "agentUrl": "http://192.0.2.1:4477"
+          }
+        },
+        "POST /v1/admin/nodes/:id/maintenance": {
+          "description": "Set node to maintenance mode",
+          "response": {
+            "id": "node_abc",
+            "name": "node-1",
+            "status": "MAINTENANCE",
+            "totalCpu": 8,
+            "totalRamMb": 32768,
+            "totalStorageGb": 500,
+            "reservedCpu": 1,
+            "reservedRamMb": 4096,
+            "reservedStorageGb": 50,
+            "allocatedCpu": 2,
+            "allocatedRamMb": 8192,
+            "allocatedStorageGb": 60,
+            "provider": "aws",
+            "region": "us-east-1",
+            "hostname": "192.0.2.1",
+            "ip": "192.0.2.1",
+            "agentUrl": "http://192.0.2.1:4477"
+          }
+        },
+        "POST /v1/admin/nodes/:id/restart-agent": {
+          "description": "Request host-level restart of the node agent",
+          "response": {
+            "message": "Agent restart requested (host-level)",
+            "nodeId": "node_abc",
+            "provider": "aws"
+          }
+        },
+        "POST /v1/admin/nodes/:id/reconcile-containers": {
+          "description": "Reconcile pre-existing containers on a node",
+          "response": {
+            "nodeId": "node_abc",
+            "containers": 3,
+            "cpu": 1.5,
+            "ramMb": 4096,
+            "storageGb": 80
+          }
+        },
+        "GET /v1/admin/instances": {
+          "description": "List all instances (admin, paginated)",
+          "queryParameters": { "page": 1, "limit": 20 },
+          "response": {
+            "items": [
+              {
+                "id": "inst_001",
+                "hostname": "web-01",
+                "image": "ubuntu-24.04",
+                "status": "RUNNING",
+                "plan": { "id": "plan_xyz", "name": "S-1", "cpu": 1, "ramMb": 2048, "storageGb": 50, "priceNgn": 5000 },
+                "user": { "email": "ada@example.com" },
+                "node": { "id": "node_abc", "name": "node-1", "provider": "aws", "region": "us-east-1" }
+              }
+            ],
+            "meta": { "page": 1, "limit": 20, "total": 87, "totalPages": 5 }
+          }
+        },
+        "GET /v1/admin/instances/:id": {
+          "description": "Get instance details (admin)",
+          "response": {
+            "id": "inst_001",
+            "userId": "user_abc123",
+            "organizationId": "org_def456",
+            "nodeId": "node_abc",
+            "planId": "plan_xyz",
+            "hostname": "web-01",
+            "ip": "10.0.1.10",
+            "sshPort": 22,
+            "image": "ubuntu-24.04",
+            "sshKeyId": "ssh_abc",
+            "status": "RUNNING",
+            "providerRef": "i-0abc123",
+            "errorMessage": null,
+            "autoRenew": true,
+            "createdAt": "2026-09-20T10:00:00.000Z",
+            "updatedAt": "2026-09-22T07:00:00.000Z",
+            "deletedAt": null,
+            "plan": { "id": "plan_xyz", "name": "S-1", "cpu": 1, "ramMb": 2048, "storageGb": 50, "priceNgn": 5000 },
+            "node": { "id": "node_abc", "name": "node-1", "provider": "aws", "region": "us-east-1" },
+            "subscription": {
+              "id": "sub_001",
+              "status": "ACTIVE",
+              "nextBillingDate": "2026-10-20T10:00:00.000Z"
+            }
+          }
+        },
+        "POST /v1/admin/instances/:id/suspend": {
+          "description": "Suspend an instance",
+          "response": {
+            "message": "Instance suspended"
+          }
+        },
+        "POST /v1/admin/instances/:id/resume": {
+          "description": "Resume a suspended instance (set to STOPPED)",
+          "response": {
+            "message": "Instance resumed (stopped). Customer can start it."
+          }
+        },
+        "POST /v1/admin/instances/:id/move": {
+          "description": "Move an instance to another node",
+          "requestBody": { "targetNodeId": "node_def" },
+          "response": {
+            "message": "Instance reassigned (live migrate is post-MVP)",
+            "targetNodeId": "node_def"
+          }
+        },
+        "GET /v1/admin/instances/:id/logs": {
+          "description": "Get audit logs for an instance",
+          "response": [
+            {
+              "id": "audit_001",
+              "userId": "user_abc123",
+              "action": "instance.create",
+              "resource": "Instance",
+              "metadata": { "params": { "id": "inst_001" } },
+              "ip": "192.0.2.1",
+              "userAgent": "Mozilla/5.0",
+              "timestamp": "2026-09-20T10:00:00.000Z"
+            }
+          ]
+        },
+        "GET /v1/admin/customers": {
+          "description": "List customers (admin, paginated)",
+          "queryParameters": { "page": 1, "limit": 20 },
+          "response": {
+            "items": [
+              {
+                "id": "user_abc123",
+                "email": "ada@example.com",
+                "name": "Ada Lovelace",
+                "status": "ACTIVE",
+                "createdAt": "2026-09-20T09:00:00.000Z",
+                "_count": { "instances": 3 }
+              }
+            ],
+            "meta": { "page": 1, "limit": 20, "total": 1250, "totalPages": 63 }
+          }
+        },
+        "GET /v1/admin/customers/:id": {
+          "description": "Get customer details (admin)",
+          "response": {
+            "id": "user_abc123",
+            "email": "ada@example.com",
+            "name": "Ada Lovelace",
+            "role": "CUSTOMER",
+            "status": "ACTIVE",
+            "emailVerifiedAt": "2026-09-21T10:00:00.000Z",
+            "twoFactorEnabled": false,
+            "lastLoginAt": "2026-09-22T06:00:00.000Z",
+            "lastLoginIp": "192.0.2.1",
+            "referredByUserId": null,
+            "deletedAt": null,
+            "createdAt": "2026-09-20T09:00:00.000Z",
+            "updatedAt": "2026-09-22T06:00:00.000Z",
+            "wallet": { "id": "wallet_abc", "userId": "user_abc123", "balance": 2500, "createdAt": "2026-09-20T09:00:00.000Z", "updatedAt": "2026-09-22T06:00:00.000Z" },
+            "walletBalance": 2500,
+            "instances": [],
+            "subscriptions": [],
+            "payments": []
+          }
+        },
+        "GET /v1/admin/customers/:id/wallet": {
+          "description": "Customer wallet balance and recent ledger entries",
+          "response": {
+            "balance": 2500,
+            "transactions": [
+              {
+                "id": "txn_abc",
+                "amount": 5000,
+                "type": "CREDIT",
+                "status": "SUCCESS",
+                "reference": "wallet_fund_a1b2c3d4",
+                "description": "Wallet funding",
+                "date": "2026-09-21T12:00:00.000Z"
+              }
+            ]
+          }
+        },
+        "GET /v1/admin/wallet-transactions": {
+          "description": "Paginated wallet ledger",
+          "queryParameters": { "page": 1, "limit": 20 },
+          "response": {
+            "items": [
+              {
+                "id": "txn_abc",
+                "reference": "wallet_fund_a1b2c3d4",
+                "customerId": "user_abc123",
+                "customerEmail": "ada@example.com",
+                "customerName": "Ada Lovelace",
+                "amount": 5000,
+                "type": "CREDIT",
+                "status": "SUCCESS",
+                "description": "Wallet funding",
+                "createdAt": "2026-09-21T12:00:00.000Z"
+              }
+            ],
+            "meta": { "page": 1, "limit": 20, "total": 128, "totalPages": 7 }
+          }
+        },
+        "POST /v1/admin/wallet-transactions/:reference/retry-verify": {
+          "description": "Re-verify a pending wallet funding reference via Paystack",
+          "response": { "status": "SUCCESS" }
+        },
+        "POST /v1/admin/customers/:id/suspend": {
+          "description": "Suspend a customer account",
+          "response": {
+            "message": "Customer suspended"
+          }
+        },
+        "PATCH /v1/admin/plans/:id": {
+          "description": "Update a plan",
+          "requestBody": { "priceNgn": 6000, "status": "ACTIVE" },
+          "response": {
+            "id": "plan_xyz",
+            "name": "S-1",
+            "slug": "s-1",
+            "description": "1 vCPU, 2GB RAM, 50GB Disk",
+            "cpu": 1,
+            "ramMb": 2048,
+            "storageGb": 50,
+            "priceNgn": 6000,
+            "status": "ACTIVE",
+            "sortOrder": 0,
+            "createdAt": "2026-09-20T08:00:00.000Z",
+            "updatedAt": "2026-09-22T07:00:00.000Z"
+          }
+        },
+        "GET /v1/admin/payments": {
+          "description": "List all payments (admin, paginated)",
+          "queryParameters": { "page": 1, "limit": 20 },
+          "response": {
+            "items": [
+              {
+                "id": "pay_abc",
+                "reference": "nc_a1b2c3d4e5f6",
+                "customerId": "user_abc123",
+                "amount": 5000,
+                "amountNgn": 5000,
+                "status": "Success",
+                "channel": "card",
+                "webhookAt": "2026-09-20T10:00:00.000Z",
+                "createdAt": "2026-09-20T10:00:00.000Z"
+              }
+            ],
+            "meta": { "page": 1, "limit": 20, "total": 412, "totalPages": 21 }
+          }
+        },
+        "POST /v1/admin/payments/:reference/retry-verification": {
+          "description": "Retry payment verification",
+          "response": {
+            "status": "Success"
+          }
+        },
+        "GET /v1/admin/subscriptions": {
+          "description": "List all subscriptions (admin, paginated)",
+          "queryParameters": { "page": 1, "limit": 20 },
+          "response": [
+            {
+              "id": "sub_001",
+              "userId": "user_abc123",
+              "instanceId": "inst_001",
+              "planId": "plan_xyz",
+              "status": "ACTIVE",
+              "nextBillingDate": "2026-10-20T10:00:00.000Z",
+              "graceEndsAt": null,
+              "cancelledAt": null,
+              "createdAt": "2026-09-20T10:00:00.000Z",
+              "updatedAt": "2026-09-20T10:00:00.000Z",
+              "user": { "email": "ada@example.com" },
+              "plan": { "id": "plan_xyz", "name": "S-1", "cpu": 1, "ramMb": 2048, "storageGb": 50, "priceNgn": 5000, "status": "ACTIVE", "slug": "s-1", "sortOrder": 0 },
+              "instance": { "id": "inst_001", "userId": "user_abc123", "organizationId": "org_def456", "planId": "plan_xyz", "hostname": "web-01" }
+            }
+          ]
+        },
+        "GET /v1/admin/usage/aggregate": {
+          "description": "Get usage sample count",
+          "response": {
+            "samples": 125000
+          }
+        },
+        "GET /v1/admin/incidents": {
+          "description": "List incidents",
+          "response": [
+            {
+              "id": "inc_abc",
+              "title": "API latency spike",
+              "component": "api",
+              "status": "investigating",
+              "message": "Increased latency on API endpoint",
+              "startedAt": "2026-09-22T05:00:00.000Z",
+              "resolvedAt": null,
+              "updatedAt": "2026-09-22T05:30:00.000Z"
+            }
+          ]
+        },
+        "POST /v1/admin/incidents": {
+          "description": "Create a new incident",
+          "requestBody": {
+            "title": "API downtime",
+            "component": "api",
+            "status": "investigating",
+            "message": "API is experiencing downtime"
+          },
+          "response": {
+            "id": "inc_def",
+            "title": "API downtime",
+            "component": "api",
+            "status": "investigating",
+            "message": "API is experiencing downtime",
+            "startedAt": "2026-09-22T07:00:00.000Z",
+            "resolvedAt": null,
+            "updatedAt": "2026-09-22T07:00:00.000Z"
+          }
+        },
+        "PATCH /v1/admin/incidents/:id": {
+          "description": "Update an incident",
+          "requestBody": { "status": "resolved" },
+          "response": {
+            "id": "inc_def",
+            "title": "API downtime",
+            "component": "api",
+            "status": "resolved",
+            "message": "API is experiencing downtime",
+            "startedAt": "2026-09-22T07:00:00.000Z",
+            "resolvedAt": "2026-09-22T07:30:00.000Z",
+            "updatedAt": "2026-09-22T07:30:00.000Z"
+          }
+        },
+        "GET /v1/admin/abuse-queue": {
+          "description": "List abuse cases (admin, paginated)",
+          "queryParameters": { "page": 1, "limit": 20 },
+          "response": {
+            "items": [
+              {
+                "id": "abuse_abc",
+                "instanceId": "inst_001",
+                "userId": "user_abc123",
+                "reason": "DDoS activity",
+                "status": "OPEN",
+                "evidence": { "report": "Suspicious traffic pattern" },
+                "createdAt": "2026-09-22T05:00:00.000Z",
+                "resolvedAt": null,
+                "resolvedBy": null
+              }
+            ],
+            "meta": { "page": 1, "limit": 20, "total": 0, "totalPages": 0 }
+          }
+        },
+        "POST /v1/admin/abuse-queue/:id/resolve": {
+          "description": "Resolve an abuse case",
+          "response": {
+            "id": "abuse_abc",
+            "status": "RESOLVED",
+            "resolvedAt": "2026-09-22T07:30:00.000Z",
+            "resolvedBy": "user_admin"
+          }
+        },
+        "GET /v1/admin/audit-logs": {
+          "description": "List audit logs (admin, paginated)",
+          "queryParameters": { "page": 1, "limit": 20, "userId": "user_abc123", "resource": "Instance" },
+          "response": {
+            "items": [
+              {
+                "id": "audit_001",
+                "userId": "user_abc123",
+                "action": "instance.create",
+                "resource": "Instance",
+                "metadata": { "hostname": "web-01" },
+                "ip": "192.0.2.1",
+                "userAgent": "Mozilla/5.0",
+                "timestamp": "2026-09-20T10:00:00.000Z"
+              }
+            ],
+            "meta": { "page": 1, "limit": 20, "total": 540, "totalPages": 27 }
+          }
+        },
+        "GET /v1/admin/settings": {
+          "description": "Get all system settings",
+          "response": [
+            {
+              "id": "setting_abc",
+              "key": "maintenance_mode",
+              "value": false,
+              "updatedAt": "2026-09-20T08:00:00.000Z"
+            }
+          ]
+        },
+        "PATCH /v1/admin/settings": {
+          "description": "Update system settings",
+          "requestBody": { "maintenance_mode": true },
+          "response": [
+            {
+              "id": "setting_abc",
+              "key": "maintenance_mode",
+              "value": true,
+              "updatedAt": "2026-09-22T07:00:00.000Z"
+            }
+          ]
+        }
+      }
+    },
+    "Nodes (Customer)": {
+      "basePath": "/v1/nodes",
+      "requiresAuth": true,
+      "routes": {
+        "GET /v1/nodes": {
+          "description": "List user's nodes",
+          "response": [
+            {
+              "id": "node_abc",
+              "name": "node-1",
+              "hostname": "192.0.2.1",
+              "status": "RUNNING",
+              "ip": "10.0.1.10",
+              "plan": { "name": "S-1", "cpu": 1, "ramMb": 2048, "storageGb": 50 }
+            }
+          ]
+        },
+        "GET /v1/nodes/:id": {
+          "description": "Get node details",
+          "response": {
+            "id": "node_abc",
+            "name": "node-1",
+            "provider": "aws",
+            "region": "us-east-1",
+            "hostname": "192.0.2.1",
+            "agentVersion": "1.2.0",
+            "ip": "192.0.2.1",
+            "agentUrl": "http://192.0.2.1:4477",
+            "status": "ONLINE",
+            "totalCpu": 8,
+            "totalRamMb": 32768,
+            "totalStorageGb": 500,
+            "reservedCpu": 1,
+            "reservedRamMb": 4096,
+            "reservedStorageGb": 50,
+            "allocatedCpu": 2,
+            "allocatedRamMb": 8192,
+            "allocatedStorageGb": 60,
+            "lastHeartbeatAt": "2026-09-22T07:00:00.000Z",
+            "createdAt": "2026-09-20T08:00:00.000Z",
+            "updatedAt": "2026-09-22T07:00:00.000Z"
+          }
+        }
+      }
+    },
+    "Instances": {
+      "basePath": "/v1/instances",
+      "requiresAuth": true,
+      "routes": {
+        "POST /v1/instances": {
+          "description": "Create instance",
+          "requestBody": {
+            "planId": "plan_xyz",
+            "hostname": "web-01",
+            "image": "ubuntu-24.04",
+            "imageType": "os",
+            "region": "Nigeria",
+            "sshKeyId": "ssh_abc",
+            "payWith": "wallet"
+          },
+          "response": {
+            "instance": {
+              "id": "inst_001",
+              "userId": "user_abc123",
+              "organizationId": "org_def456",
+              "nodeId": "node_abc",
+              "planId": "plan_xyz",
+              "hostname": "web-01",
+              "ip": null,
+              "sshPort": null,
+              "image": "ubuntu-24.04",
+              "sshKeyId": "ssh_abc",
+              "status": "CREATING",
+              "providerRef": null,
+              "errorMessage": null,
+              "autoRenew": true,
+              "createdAt": "2026-09-22T07:00:00.000Z",
+              "updatedAt": "2026-09-22T07:00:00.000Z",
+              "deletedAt": null,
+              "plan": { "id": "plan_xyz", "name": "S-1", "slug": "s-1", "cpu": 1, "ramMb": 2048, "storageGb": 50, "priceNgn": 5000, "status": "ACTIVE", "sortOrder": 0 }
+            },
+            "next": {
+              "action": "provisioning",
+              "message": "Wallet debit successful — provisioning started"
+            }
+          }
+        },
+        "GET /v1/instances": {
+          "description": "List instances (paginated)",
+          "queryParameters": { "page": 1, "limit": 20 },
+          "response": {
+            "items": [
+              {
+                "id": "inst_001",
+                "userId": "user_abc123",
+                "organizationId": "org_def456",
+                "nodeId": "node_abc",
+                "planId": "plan_xyz",
+                "hostname": "web-01",
+                "ip": "10.0.1.10",
+                "sshPort": 22,
+                "image": "ubuntu-24.04",
+                "sshKeyId": "ssh_abc",
+                "status": "RUNNING",
+                "providerRef": "i-0abc123",
+                "errorMessage": null,
+                "autoRenew": true,
+                "createdAt": "2026-09-20T10:00:00.000Z",
+                "updatedAt": "2026-09-22T07:00:00.000Z",
+                "deletedAt": null,
+                "plan": { "id": "plan_xyz", "name": "S-1", "slug": "s-1", "cpu": 1, "ramMb": 2048, "storageGb": 50, "priceNgn": 5000, "status": "ACTIVE", "sortOrder": 0 },
+                "node": { "name": "node-1", "region": "us-east-1", "provider": "aws" }
+              }
+            ],
+            "meta": { "page": 1, "limit": 20, "total": 5, "totalPages": 1 }
+          }
+        },
+        "GET /v1/instances/:id": {
+          "description": "Get instance details",
+          "response": {
+            "id": "inst_001",
+            "userId": "user_abc123",
+            "organizationId": "org_def456",
+            "nodeId": "node_abc",
+            "planId": "plan_xyz",
+            "hostname": "web-01",
+            "ip": "10.0.1.10",
+            "sshPort": 22,
+            "image": "ubuntu-24.04",
+            "sshKeyId": "ssh_abc",
+            "status": "RUNNING",
+            "providerRef": "i-0abc123",
+            "errorMessage": null,
+            "autoRenew": true,
+            "createdAt": "2026-09-20T10:00:00.000Z",
+            "updatedAt": "2026-09-22T07:00:00.000Z",
+            "deletedAt": null,
+            "plan": { "id": "plan_xyz", "name": "S-1", "slug": "s-1", "cpu": 1, "ramMb": 2048, "storageGb": 50, "priceNgn": 5000, "status": "ACTIVE", "sortOrder": 0 },
+            "node": { "id": "node_abc", "name": "node-1", "provider": "aws", "region": "us-east-1", "ip": "192.0.2.1", "agentUrl": "http://192.0.2.1:4477" },
+            "subscription": {
+              "id": "sub_001",
+              "userId": "user_abc123",
+              "instanceId": "inst_001",
+              "planId": "plan_xyz",
+              "status": "ACTIVE",
+              "nextBillingDate": "2026-10-20T10:00:00.000Z",
+              "graceEndsAt": null,
+              "cancelledAt": null,
+              "createdAt": "2026-09-20T10:00:00.000Z",
+              "updatedAt": "2026-09-20T10:00:00.000Z"
+            }
+          }
+        },
+        "POST /v1/instances/:id/action": {
+          "description": "Execute a power action: START | STOP | REBOOT | REBUILD",
+          "requestBody": {
+            "action": "START"
+          },
+          "response": {
+            "message": "Start requested",
+            "id": "inst_001"
+          }
+        },
+        "PATCH /v1/instances/:id": {
+          "description": "Update instance metadata: hostname, autoRenew",
+          "requestBody": {
+            "hostname": "web-02",
+            "autoRenew": false
+          },
+          "response": {
+            "message": "Instance updated",
+            "instance": {
+              "id": "inst_001",
+              "hostname": "web-02",
+              "image": "ubuntu-24.04",
+              "status": "RUNNING",
+              "plan": { "id": "plan_xyz", "name": "S-1", "cpu": 1, "ramMb": 2048, "storageGb": 50, "priceNgn": 5000 }
+            }
+          }
+        },
+        "POST /v1/instances/:id/start": {
+          "description": "Start instance",
+          "response": {
+            "message": "Start requested",
+            "id": "inst_001"
+          }
+        },
+        "POST /v1/instances/:id/stop": {
+          "description": "Stop instance",
+          "response": {
+            "message": "Stop requested",
+            "id": "inst_001"
+          }
+        },
+        "POST /v1/instances/:id/restart": {
+          "description": "Restart instance",
+          "response": {
+            "message": "Restart requested",
+            "id": "inst_001"
+          }
+        },
+        "POST /v1/instances/:id/rebuild": {
+          "description": "Rebuild instance with new image",
+          "requestBody": {
+            "image": "ubuntu-24.04"
+          },
+          "response": {
+            "message": "Rebuild queued",
+            "id": "inst_001"
+          }
+        },
+        "DELETE /v1/instances/:id": {
+          "description": "Delete instance",
+          "response": {
+            "message": "Deletion queued",
+            "id": "inst_001"
+          }
+        },
+        "GET /v1/instances/:id/metrics": {
+          "description": "Instance metrics",
+          "queryParameters": { "range": "1h" },
+          "response": {
+            "range": "1h",
+            "points": [
+              {
+                "id": "metric_001",
+                "instanceId": "inst_001",
+                "cpuPct": 45.2,
+                "ramMb": 1024,
+                "diskGb": 12.5,
+                "networkMb": 50.3,
+                "timestamp": "2026-09-22T06:55:00.000Z"
+              }
+            ]
+          }
+        },
+        "GET /v1/instances/:id/console-token": {
+          "description": "Get console WebSocket token (short-lived)",
+          "response": {
+            "token": "console_token_a1b2c3d4e5f6g7h8",
+            "expiresIn": 60,
+            "namespace": "/ws"
+          }
+        }
+      }
+    },
+    "Plans": {
+      "basePath": "/v1/plans",
+      "requiresAuth": false,
+      "routes": {
+        "GET /v1/plans": {
+          "description": "List available plans (public catalog)",
+          "response": [
+            {
+              "id": "plan_xyz",
+              "name": "S-1",
+              "slug": "s-1",
+              "description": "1 vCPU, 2GB RAM, 50GB Disk",
+              "cpu": 1,
+              "ramMb": 2048,
+              "storageGb": 50,
+              "priceNgn": 5000,
+              "status": "ACTIVE",
+              "sortOrder": 0,
+              "createdAt": "2026-09-20T08:00:00.000Z",
+              "updatedAt": "2026-09-20T08:00:00.000Z"
+            }
+          ]
+        },
+        "GET /v1/plans/:id": {
+          "description": "Get plan details",
+          "response": {
+            "id": "plan_xyz",
+            "name": "S-1",
+            "slug": "s-1",
+            "description": "1 vCPU, 2GB RAM, 50GB Disk",
+            "cpu": 1,
+            "ramMb": 2048,
+            "storageGb": 50,
+            "priceNgn": 5000,
+            "status": "ACTIVE",
+            "sortOrder": 0,
+            "createdAt": "2026-09-20T08:00:00.000Z",
+            "updatedAt": "2026-09-20T08:00:00.000Z"
+          }
+        }
+      }
+    },
+    "SSH Keys": {
+      "basePath": "/v1/ssh-keys",
+      "requiresAuth": true,
+      "routes": {
+        "POST /v1/ssh-keys": {
+          "description": "Add SSH key",
+          "requestBody": {
+            "name": "My Laptop",
+            "publicKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... user@laptop"
+          },
+          "response": {
+            "id": "ssh_abc",
+            "userId": "user_abc123",
+            "name": "My Laptop",
+            "publicKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...",
+            "fingerprint": "SHA256:abc123def456",
+            "createdAt": "2026-09-22T07:00:00.000Z"
+          }
+        },
+        "GET /v1/ssh-keys": {
+          "description": "List SSH keys",
+          "response": [
+            {
+              "id": "ssh_abc",
+              "name": "My Laptop",
+              "fingerprint": "SHA256:abc123def456",
+              "createdAt": "2026-09-22T07:00:00.000Z"
+            }
+          ]
+        },
+        "DELETE /v1/ssh-keys/:id": {
+          "description": "Delete SSH key",
+          "response": {
+            "message": "SSH key deleted"
+          }
+        }
+      }
+    },
+    "API Keys": {
+      "basePath": "/v1/api-keys",
+      "requiresAuth": true,
+      "routes": {
+        "POST /v1/api-keys": {
+          "description": "Create API key (raw secret returned once)",
+          "requestBody": {
+            "name": "CI/CD Key"
+          },
+          "response": {
+            "id": "api_abc",
+            "name": "CI/CD Key",
+            "prefix": "nc_live_a1b2c3",
+            "key": "nc_live_a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6",
+            "createdAt": "2026-09-22T07:00:00.000Z",
+            "warning": "Store this key now. It will not be shown again."
+          }
+        },
+        "GET /v1/api-keys": {
+          "description": "List API keys",
+          "response": [
+            {
+              "id": "api_abc",
+              "name": "CI/CD Key",
+              "prefix": "nc_live_a1b2c3",
+              "lastUsedAt": "2026-09-22T06:00:00.000Z",
+              "createdAt": "2026-09-22T07:00:00.000Z"
+            }
+          ]
+        },
+        "DELETE /v1/api-keys/:id": {
+          "description": "Delete API key (revoke)",
+          "response": {
+            "message": "API key revoked"
+          }
+        }
+      }
+    },
+    "Billing": {
+      "basePath": "/v1/billing",
+      "requiresAuth": true,
+      "routes": {
+        "GET /v1/billing/wallet": {
+          "description": "Get wallet balance and recent transactions",
+          "response": {
+            "balance": 2500,
+            "transactions": [
+              {
+                "id": "txn_abc",
+                "amount": 5000,
+                "type": "CREDIT",
+                "status": "SUCCESS",
+                "reference": "wallet_fund_a1b2c3d4",
+                "description": "Wallet funding",
+                "date": "2026-09-21T12:00:00.000Z"
+              }
+            ]
+          }
+        },
+        "POST /v1/billing/wallet/fund": {
+          "description": "Initialize Paystack transaction to fund the wallet",
+          "requestBody": { "amount": 10000 },
+          "response": {
+            "checkoutUrl": "https://paystack.com/pay/wallet_fund_a1b2c3",
+            "reference": "wallet_fund_a1b2c3d4"
+          }
+        },
+        "POST /v1/billing/wallet/verify": {
+          "description": "Manually verify a wallet funding transaction",
+          "requestBody": { "reference": "wallet_fund_a1b2c3d4" },
+          "response": {
+            "status": "SUCCESS",
+            "balance": 7500
+          }
+        },
+        "POST /v1/billing/checkout": {
+          "description": "Create Paystack checkout session for instance",
+          "requestBody": { "instanceId": "inst_001" },
+          "response": {
+            "authorization_url": "https://paystack.com/bc/nc_a1b2c3d4e5f6",
+            "access_code": "def456",
+            "reference": "nc_a1b2c3d4e5f6",
+            "publicKey": "pk_test_12345"
+          }
+        },
+        "POST /v1/billing/webhooks/paystack": {
+          "description": "Paystack webhook (signature verified)",
+          "requiresAuth": false,
+          "response": {
+            "received": true
+          }
+        },
+        "GET /v1/billing/subscriptions": {
+          "description": "List user's subscriptions",
+          "queryParameters": { "page": 1, "limit": 20 },
+          "response": [
+            {
+              "id": "sub_001",
+              "userId": "user_abc123",
+              "instanceId": "inst_001",
+              "planId": "plan_xyz",
+              "status": "ACTIVE",
+              "nextBillingDate": "2026-10-20T10:00:00.000Z",
+              "graceEndsAt": null,
+              "cancelledAt": null,
+              "createdAt": "2026-09-20T10:00:00.000Z",
+              "updatedAt": "2026-09-20T10:00:00.000Z",
+              "plan": { "id": "plan_xyz", "name": "S-1", "slug": "s-1", "cpu": 1, "ramMb": 2048, "storageGb": 50, "priceNgn": 5000, "status": "ACTIVE", "sortOrder": 0 },
+              "instance": { "id": "inst_001", "hostname": "web-01", "image": "ubuntu-24.04", "status": "RUNNING", "ip": "10.0.1.10" }
+            }
+          ]
+        },
+        "PATCH /v1/billing/subscriptions/:id": {
+          "description": "Update subscription (cancel/upgrade/downgrade)",
+          "requestBody": { "action": "cancel" },
+          "response": {
+            "message": "Subscription cancelled at period end",
+            "id": "sub_001"
+          }
+        },
+        "GET /v1/billing/invoices": {
+          "description": "List user's invoices (paginated)",
+          "queryParameters": { "page": 1, "limit": 20 },
+          "response": {
+            "items": [
+              {
+                "id": "inv_abc",
+                "userId": "user_abc123",
+                "subscriptionId": "sub_001",
+                "paymentId": "pay_abc",
+                "amountNgn": 5000,
+                "currency": "NGN",
+                "status": "PAID",
+                "dueDate": "2026-09-20T10:00:00.000Z",
+                "paidAt": "2026-09-20T10:00:00.000Z",
+                "pdfUrl": null,
+                "number": "NC-000001",
+                "createdAt": "2026-09-20T10:00:00.000Z"
+              }
+            ],
+            "meta": { "page": 1, "limit": 20, "total": 3, "totalPages": 1 }
+          }
+        },
+        "GET /v1/billing/invoices/:id/pdf": {
+          "description": "Download invoice PDF",
+          "response": {
+            "number": "NC-000001",
+            "amountNgn": 5000,
+            "status": "PAID",
+            "dueDate": "2026-09-20T10:00:00.000Z",
+            "paidAt": "2026-09-20T10:00:00.000Z",
+            "html": "<html><body><h1>NairaCloud Invoice NC-000001</h1><p>Amount: ₦5000</p><p>Status: PAID</p></body></html>"
+          }
+        },
+        "GET /v1/billing/payment-methods": {
+          "description": "List payment methods",
+          "response": [
+            {
+              "id": "pm_abc",
+              "last4": "4081",
+              "cardType": "visa",
+              "bank": "TEST BANK",
+              "expMonth": "12",
+              "expYear": "2027",
+              "isDefault": true,
+              "createdAt": "2026-09-20T10:00:00.000Z"
+            }
+          ]
+        },
+        "POST /v1/billing/payment-methods": {
+          "description": "Add payment method (placeholder - use checkout instead)",
+          "response": {
+            "error": {
+              "code": "USE_CHECKOUT",
+              "message": "Add a card by completing checkout; Paystack authorization is stored on success"
+            }
+          }
+        },
+        "DELETE /v1/billing/payment-methods/:id": {
+          "description": "Delete payment method",
+          "response": {
+            "message": "Payment method removed"
+          }
+        }
+      }
+    },
+    "Support": {
+      "basePath": "/v1/support",
+      "requiresAuth": true,
+      "routes": {
+        "POST /v1/support": {
+          "description": "Create ticket",
+          "requestBody": {
+            "category": "technical",
+            "subject": "Instance not booting",
+            "body": "My instance inst_001 is stuck in BOOTING state."
+          },
+          "response": {
+            "id": "ticket_abc",
+            "userId": "user_abc123",
+            "category": "technical",
+            "subject": "Instance not booting",
+            "status": "open",
+            "createdAt": "2026-09-22T07:00:00.000Z",
+            "updatedAt": "2026-09-22T07:00:00.000Z",
+            "messages": [
+              {
+                "id": "msg_abc",
+                "ticketId": "ticket_abc",
+                "authorId": "user_abc123",
+                "body": "My instance inst_001 is stuck in BOOTING state.",
+                "createdAt": "2026-09-22T07:00:00.000Z"
+              }
+            ]
+          }
+        },
+        "GET /v1/support": {
+          "description": "List tickets (paginated)",
+          "queryParameters": { "page": 1, "limit": 20 },
+          "response": {
+            "items": [
+              {
+                "id": "ticket_abc",
+                "userId": "user_abc123",
+                "category": "technical",
+                "subject": "Instance not booting",
+                "status": "open",
+                "createdAt": "2026-09-22T07:00:00.000Z",
+                "updatedAt": "2026-09-22T07:00:00.000Z"
+              }
+            ],
+            "meta": { "page": 1, "limit": 20, "total": 1, "totalPages": 1 }
+          }
+        },
+        "GET /v1/support/:id": {
+          "description": "Get ticket details",
+          "response": {
+            "id": "ticket_abc",
+            "userId": "user_abc123",
+            "category": "technical",
+            "subject": "Instance not booting",
+            "status": "open",
+            "createdAt": "2026-09-22T07:00:00.000Z",
+            "updatedAt": "2026-09-22T07:00:00.000Z",
+            "messages": [
+              {
+                "id": "msg_abc",
+                "ticketId": "ticket_abc",
+                "authorId": "user_abc123",
+                "body": "My instance inst_001 is stuck in BOOTING state.",
+                "createdAt": "2026-09-22T07:00:00.000Z"
+              }
+            ]
+          }
+        },
+        "POST /v1/support/:id/reply": {
+          "description": "Reply to ticket (adds message)",
+          "requestBody": {
+            "message": "Thanks for reporting. We're investigating."
+          },
+          "response": {
+            "id": "msg_def",
+            "ticketId": "ticket_abc",
+            "authorId": "user_support",
+            "body": "Thanks for reporting. We're investigating.",
+            "createdAt": "2026-09-22T07:15:00.000Z"
+          }
+        },
+        "POST /v1/support/:id/messages": {
+          "description": "Add message to ticket",
+          "requestBody": {
+            "body": "Additional info from user"
+          },
+          "response": {
+            "id": "msg_ghi",
+            "ticketId": "ticket_abc",
+            "authorId": "user_abc123",
+            "body": "Additional info from user",
+            "createdAt": "2026-09-22T07:20:00.000Z"
+          }
+        },
+        "PATCH /v1/support/:id": {
+          "description": "Update ticket",
+          "requestBody": { "status": "resolved" },
+          "response": {
+            "id": "ticket_abc",
+            "userId": "user_abc123",
+            "category": "technical",
+            "subject": "Instance not booting",
+            "status": "resolved",
+            "createdAt": "2026-09-22T07:00:00.000Z",
+            "updatedAt": "2026-09-22T07:30:00.000Z"
+          }
+        }
+      }
+    },
+    "Referrals": {
+      "basePath": "/v1/referrals",
+      "requiresAuth": true,
+      "routes": {
+        "GET /v1/referrals": {
+          "description": "Get referral info, code, and payout history",
+          "response": {
+            "referralCode": "nabil201",
+            "stats": {
+              "totalSignups": 12,
+              "conversionRate": 58,
+              "totalEarned": 6000
+            },
+            "history": [
+              {
+                "id": "ref_hist_001",
+                "user": "ad***@example.com",
+                "status": "Paid Out",
+                "amount": 500,
+                "date": "2026-09-22T06:00:00.000Z"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "Usage": {
+      "basePath": "/v1/usage",
+      "requiresAuth": true,
+      "routes": {
+        "GET /v1/usage/summary": {
+          "description": "Usage summary",
+          "response": {
+            "instanceCount": 3,
+            "last24h": [
+              {
+                "instanceId": "inst_001",
+                "_avg": {
+                  "cpuPct": 45.2,
+                  "ramMb": 1024,
+                  "diskGb": 12.5,
+                  "networkMb": 50.3
+                }
+              }
+            ],
+            "instances": [
+              {
+                "id": "inst_001",
+                "hostname": "web-01",
+                "plan": "S-1",
+                "status": "RUNNING"
+              }
+            ]
+          }
+        },
+        "GET /v1/usage/history": {
+          "description": "Usage history (rolled-up)",
+          "queryParameters": { "months": 6 },
+          "response": [
+            {
+              "id": "rollup_abc",
+              "instanceId": "inst_001",
+              "period": "daily",
+              "periodStart": "2026-09-21T00:00:00.000Z",
+              "avgCpuPct": 42.5,
+              "avgRamMb": 1024,
+              "avgDiskGb": 12.3,
+              "avgNetworkMb": 48.2,
+              "samples": 24
+            }
+          ]
+        }
+      }
+    },
+    "Internal / Node Agent": {
+      "basePath": "/v1/internal",
+      "requiresAuth": false,
+      "authMethod": "agent_hmac",
+      "routes": {
+        "POST /v1/internal/nodes/register": {
+          "description": "Register node (node agent only)",
+          "requestBody": {
+            "name": "node-1",
+            "provider": "aws",
+            "region": "us-east-1",
+            "hostname": "192.0.2.1",
+            "agentVersion": "1.2.0",
+            "totalCpu": 8,
+            "totalRamMb": 32768,
+            "totalStorageGb": 500,
+            "reservedCpu": 1,
+            "reservedRamMb": 4096,
+            "reservedStorageGb": 50
+          },
+          "response": {
+            "id": "node_abc",
+            "name": "node-1",
+            "provider": "aws",
+            "region": "us-east-1",
+            "hostname": "192.0.2.1",
+            "agentVersion": "1.2.0",
+            "ip": "192.0.2.1",
+            "status": "ONLINE",
+            "totalCpu": 8,
+            "totalRamMb": 32768,
+            "totalStorageGb": 500,
+            "reservedCpu": 1,
+            "reservedRamMb": 4096,
+            "reservedStorageGb": 50,
+            "allocatedCpu": 0,
+            "allocatedRamMb": 0,
+            "allocatedStorageGb": 0,
+            "lastHeartbeatAt": "2026-09-22T07:00:00.000Z",
+            "createdAt": "2026-09-22T07:00:00.000Z",
+            "updatedAt": "2026-09-22T07:00:00.000Z"
+          }
+        },
+        "POST /v1/internal/nodes/:id/heartbeat": {
+          "description": "Node heartbeat (updates status and resource usage)",
+          "requestBody": {
+            "cpuPct": 32.5,
+            "ramUsedMb": 8192,
+            "diskUsedGb": 120,
+            "networkMbps": 250,
+            "instanceCount": 3
+          },
+          "response": {
+            "id": "node_abc",
+            "name": "node-1",
+            "status": "ONLINE",
+            "ip": "192.0.2.1",
+            "agentUrl": "http://192.0.2.1:4477",
+            "totalCpu": 8,
+            "totalRamMb": 32768,
+            "totalStorageGb": 500,
+            "reservedCpu": 1,
+            "reservedRamMb": 4096,
+            "reservedStorageGb": 50,
+            "allocatedCpu": 2,
+            "allocatedRamMb": 8192,
+            "allocatedStorageGb": 60,
+            "lastHeartbeatAt": "2026-09-22T07:00:00.000Z",
+            "lastHeartbeatMeta": {
+              "cpuPct": 32.5,
+              "ramUsedMb": 8192,
+              "diskUsedGb": 120,
+              "networkMbps": 250,
+              "instanceCount": 3
+            }
+          }
+        },
+        "POST /v1/internal/nodes/:id/metrics": {
+          "description": "Submit instance metrics (node agent only)",
+          "requestBody": {
+            "instanceId": "inst_001",
+            "cpuPct": 45.2,
+            "ramMb": 1024,
+            "diskGb": 12.5,
+            "networkMb": 50.3
+          },
+          "response": { "ok": true }
+        },
+        "POST /v1/internal/jobs/:jobId/ack": {
+          "description": "Acknowledge a job (node agent only)",
+          "response": { "ok": true }
+        },
+        "POST /v1/internal/jobs/:jobId/complete": {
+          "description": "Complete a job (node agent only)",
+          "requestBody": { "result": "success" },
+          "response": { "ok": true }
+        },
+        "POST /v1/internal/jobs/:jobId/fail": {
+          "description": "Fail a job (node agent only)",
+          "requestBody": { "error": "timeout waiting for SSH" },
+          "response": { "ok": true }
+        }
+      }
+    },
+    "Status Page (Public)": {
+      "basePath": "/v1/status-page",
+      "requiresAuth": false,
+      "routes": {
+        "GET /v1/status-page/status": {
+          "description": "System status (cached, 30s TTL)",
+          "response": {
+            "overall": "operational",
+            "components": {
+              "control-plane": "operational",
+              "api": "operational",
+              "payments": "operational",
+              "compute": "operational",
+              "networking": "operational",
+              "dashboard": "operational"
+            },
+            "openIncidents": [],
+            "generatedAt": "2026-09-22T07:10:00.000Z"
+          }
+        },
+        "GET /v1/status-page/incidents": {
+          "description": "Incidents",
+          "response": [
+            {
+              "id": "inc_abc",
+              "title": "API latency spike",
+              "component": "api",
+              "status": "investigating",
+              "message": "Increased latency on API endpoint",
+              "startedAt": "2026-09-22T05:00:00.000Z",
+              "resolvedAt": null,
+              "updatedAt": "2026-09-22T05:30:00.000Z"
+            }
+          ]
+        },
+        "GET /v1/status-page/stats": {
+          "description": "Homepage aggregate stats",
+          "response": {
+            "activeInstances": 64,
+            "customers": 1250,
+            "onlineNodes": 3
+          }
+        }
+      }
+    },
+    "Health": {
+      "basePath": "/v1/health",
+      "requiresAuth": false,
+      "routes": {
+        "GET /v1/health/health": {
+          "description": "Health check (liveness probe)",
+          "response": {
+            "status": "ok",
+            "service": "nairacloud-api"
+          }
+        },
+        "GET /v1/health/ready": {
+          "description": "Readiness check (verifies DB and Redis connectivity)",
+          "response": {
+            "status": "ok",
+            "mongodb": "up",
+            "redis": "up"
+          }
+        }
+      }
+    }
+  },
+  "websocket": {
+    "url": "wss://api.nairacloud.xyz/ws",
+    "description": "WebSocket endpoint for real-time events. Authenticate with nc_access cookie.",
+    "events": {
+      "clientToServer": {
+        "connect": {
+          "description": "Authenticate with nc_access cookie",
+          "payload": { "cookie": "nc_access=<jwt_token>" }
+        },
+        "console.subscribe": {
+          "description": "Subscribe to console data for an instance",
+          "payload": { "instanceId": "inst_001", "token": "console_token_a1b2c3d4e5f6g7h8" }
+        },
+        "console.input": {
+          "description": "Send input to the instance console",
+          "payload": { "instanceId": "inst_001", "input": "ls -la\n" }
+        },
+        "console.resize": {
+          "description": "Resize the console terminal",
+          "payload": { "instanceId": "inst_001", "cols": 80, "rows": 24 }
+        }
+      },
+      "serverToClient": {
+        "node.probe.progress": {
+          "description": "Real-time probe progress from admin node onboarding",
+          "payload": {
+            "nodeId": "192.0.2.1",
+            "step": "docker-detected",
+            "cmd": "docker --version",
+            "out": "Docker version 24.0.5",
+            "code": 0,
+            "timestamp": "2026-09-22T07:00:00.000Z"
+          }
+        },
+        "instance.status.changed": {
+          "description": "Instance status updates",
+          "payload": {
+            "instanceId": "inst_001",
+            "status": "RUNNING",
+            "room": "user:user_abc123"
+          }
+        },
+        "instance.provisioning.progress": {
+          "description": "Instance provisioning progress",
+          "payload": {
+            "instanceId": "inst_001",
+            "step": "docker-started",
+            "room": "user:user_abc123"
+          }
+        },
+        "node.status.changed": {
+          "description": "Node status updates (admin only)",
+          "payload": {
+            "nodeId": "node_abc",
+            "status": "ONLINE",
+            "room": "admin"
+          }
+        },
+        "alert.new": {
+          "description": "Alert notifications",
+          "payload": {
+            "alert": {
+              "type": "node.offline",
+              "message": "Node node-1 is OFFLINE",
+              "nodeId": "node_abc"
+            },
+            "room": "admin"
+          }
+        },
+        "console.data": {
+          "description": "Console terminal output data",
+          "payload": {
+            "instanceId": "inst_001",
+            "data": "root@web-01:~$ ",
+            "namespace": "/ws"
+          }
+        }
+      }
+    }
+  },
+  "probeSteps": {
+    "description": "Steps emitted by POST /v1/admin/nodes/probe via WebSocket (node.probe.progress)",
+    "steps": [
+      { "step": "connecting", "description": "Connecting via SSH" },
+      { "step": "connected", "description": "SSH connected" },
+      { "step": "exec", "description": "Executing command" },
+      { "step": "output", "description": "Command output received" },
+      { "step": "docker-detected", "description": "Docker detected" },
+      { "step": "docker-ps", "description": "Listing Docker containers" },
+      { "step": "docker-ps-done", "description": "Docker containers listed" },
+      { "step": "complete", "description": "Probe complete" }
+    ]
+  },
+  "frontendRoutes": {
+    "description": "Admin frontend routes (https://admin.nairacloud.xyz)",
+    "routes": [
+      { "path": "/", "description": "Dashboard" },
+      { "path": "/nodes", "description": "Nodes list (with probe progress)" },
+      { "path": "/nodes/:id", "description": "Node detail" },
+      { "path": "/instances", "description": "Instances list" },
+      { "path": "/instances/:id", "description": "Instance detail" },
+      { "path": "/payments", "description": "Billing" },
+      { "path": "/ssh-keys", "description": "SSH keys" },
+      { "path": "/settings", "description": "Settings" }
+    ]
+  },
+  "errorResponse": {
+    "description": "Standard error response format",
+    "response": {
+      "success": false,
+      "error": {
+        "code": "INVALID_CREDENTIALS",
+        "message": "Invalid email or password",
+        "details": null
+      },
+      "requestId": "req_abc123"
+    }
+  }
+}

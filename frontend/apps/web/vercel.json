@@ -1,0 +1,25 @@
+{
+  "buildCommand": "npm run build --workspace=@nairacloud/web",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "rewrites": [],
+  "redirects": [],
+  "headers": [
+    {
+      "source": "/:path*",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
+      ]
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://api.nairacloud.xyz",
+    "NEXT_PUBLIC_WS_URL": "https://api.nairacloud.xyz",
+    "NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY": "pk_test_xxx",
+    "NEXT_PUBLIC_WEB_URL": "https://www.nairacloud.xyz",
+    "NEXT_PUBLIC_DOCS_HOST": "docs.nairacloud.xyz"
+  }
+}

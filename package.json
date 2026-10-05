@@ -1,0 +1,19 @@
+{
+  "name": "nairacloud-ui",
+  "private": true,
+  "version": "0.1.0",
+  "description": "NairaCloud frontend — customer app, admin app, shared UI packages, and marketing waitlist. Frontend-only, no backend.",
+  "workspaces": [
+    "frontend",
+    "waitlist"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=frontend --prefix frontend",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.2"
+  }
+}

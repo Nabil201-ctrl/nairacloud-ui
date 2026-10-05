@@ -1,0 +1,23 @@
+{
+  "name": "nairacloud-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev:web": "npm run dev --workspace=@nairacloud/web",
+    "dev:admin": "npm run dev --workspace=@nairacloud/admin",
+    "build": "npm run build --workspace=@nairacloud/web && npm run build --workspace=@nairacloud/admin",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:e2e": "playwright test",
+    "test:e2e:web": "playwright test --project=web",
+    "test:e2e:admin": "playwright test --project=admin",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:install": "playwright install --with-deps"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.0",
+    "@types/node": "^22.7.4"
+  }
+}
