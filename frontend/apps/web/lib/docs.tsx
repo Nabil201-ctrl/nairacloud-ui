@@ -50,6 +50,7 @@ export const DOCS: DocSection[] = [
         <ul>
           <li>Your server (we call it an <em>instance</em>) runs Ubuntu 22.04, Ubuntu 24.04, or Debian 12.</li>
           <li>Every instance is reachable on a public IP with root access over SSH. Instances share the node's public address, and each one gets its own SSH port, which never changes.</li>
+          <li>Docker and Compose run on shared plans -- see <em>Docker &amp; Caddy</em>. Preview apps over an SSH tunnel, or ask support to publish <span className="font-mono">80</span>/<span className="font-mono">443</span> for a public domain (see <em>Networking &amp; firewall</em>).</li>
           <li>You pay per server, per month, in naira. A plan change takes effect immediately; your next invoice uses the new price.</li>
         </ul>
         <h2>Join the waitlist</h2>
@@ -61,18 +62,18 @@ export const DOCS: DocSection[] = [
           <li>The FREE plan is for trying things out. Production work belongs on STARTER and up.</li>
           <li>You are charged the moment provisioning begins.</li>
         </ul>
-        <TryIt title="Get a real website running in 5 minutes">
+        <TryIt title="Get a website running in 5 minutes">
           <ol className="list-decimal space-y-1 pl-1">
             <li className="pl-2">Deploy your first instance (STARTER is fine).</li>
             <li className="pl-2">Open the instance, copy the one-line SSH command, and run it in your terminal.</li>
-            <li className="pl-2">Paste these three commands, one at a time:</li>
+            <li className="pl-2">Paste these commands, one at a time:</li>
           </ol>
           <TerminalPreview showLineNumbers lines={[
             "$ apt update && apt install -y nginx",
             "$ systemctl enable --now nginx",
-            "$ hostname -I",
+            "$ curl -s http://127.0.0.1 | head -5",
           ]} />
-          <p>Open the IP shown at the end in your browser -- that is your own server, live on the internet.</p>
+          <p>nginx is serving on the instance. Preview it from your laptop with an SSH tunnel (see <em>Networking &amp; firewall</em>), or open a support ticket to publish ports <span className="font-mono">80</span>/<span className="font-mono">443</span> when you are ready for a public domain.</p>
         </TryIt>
       </>
     ),
@@ -204,22 +205,35 @@ export const DOCS: DocSection[] = [
         <h2>Your public address</h2>
         <p>Think of your server's address on the internet. Every instance is reachable on the node's public IPv4 address, and each instance owns a unique SSH port on it. Your address and port stay the same across start, stop, and even rebuild. They only change when you delete the server and make a new one.</p>
         <h2>What's reachable</h2>
-        <p>Your SSH port is always open to the world; that's how you connect. There is no firewall UI yet, so you can't open extra public ports from the dashboard -- a public port-mapping feature is on the roadmap. Until then, preview web apps locally with an SSH tunnel:</p>
-        <TerminalPreview showLineNumbers lines={["$ ssh -N root@102.89.13.22 -p 22000 -L 8080:localhost:80", "# then open http://localhost:8080 in your browser"]} />
+        <p>Your SSH port is always open to the world; that's how you connect. Extra public ports (such as <span className="font-mono">80</span> and <span className="font-mono">443</span>) are not self-serve in the dashboard yet. You have two paths:</p>
         <ul>
+          <li><strong>Preview</strong> -- open an SSH tunnel from your laptop (self-serve, works immediately).</li>
+          <li><strong>Production domain</strong> -- open a support ticket and ask us to publish <span className="font-mono">80</span>/<span className="font-mono">443</span> on the node for your instance. Then point DNS at the node IP and terminate TLS with Caddy inside the instance (Let's Encrypt works once those ports are live).</li>
+        </ul>
+        <TerminalPreview showLineNumbers lines={[
+          "$ ssh -N root@102.89.13.22 -p 22003 -L 8080:localhost:3000",
+          "# then open http://localhost:8080 in your browser",
+        ]} />
+        <ul>
+          <li>Inside the instance, Docker and Compose can bind ports on <span className="font-mono">localhost</span> (for example <span className="font-mono">3000</span>). Those ports are reachable over the tunnel above.</li>
           <li>Port 25 (SMTP) is blocked on every plan at the network level -- for sending email at scale use <span className="font-mono">SendGrid</span>, <span className="font-mono">Postmark</span>, or <span className="font-mono">SES</span>.</li>
           <li>ICMP is allowed, so <span className="font-mono">ping</span> and traceroute work.</li>
           <li>IPv6 is on the roadmap; until then egress uses NAT, which keeps things simple.</li>
         </ul>
         <h2>Point a domain at your server</h2>
-        <p>At your registrar, create an <strong>A record</strong> with your domain name and your server's public IPv4 address as the value. Changes usually apply within minutes to an hour.</p>
-        <TryIt title="Put your domain on your server">
+        <p>At your registrar, create an <strong>A record</strong> for your hostname and set the value to the <strong>node public IPv4</strong> shown on the instance page (instances share the node's address; your SSH port is unique). DNS often updates within minutes to an hour.</p>
+        <p>An A record alone does not serve HTTP until <span className="font-mono">80</span>/<span className="font-mono">443</span> are published for your instance. After support enables those ports, Caddy (or nginx) inside the instance can obtain certificates and serve traffic on your domain.</p>
+        <TryIt title="Preview a local app over SSH">
           <ol className="list-decimal space-y-1 pl-1">
             <li className="pl-2">Fetch your instance's public address and SSH port from its page in the dashboard.</li>
-            <li className="pl-2">At your registrar, add an A record: name <span className="font-mono">example.com</span>, value <span className="font-mono">102.89.13.22</span>.</li>
+            <li className="pl-2">Start your app on the instance (for example <span className="font-mono">docker compose up -d</span> listening on <span className="font-mono">:3000</span>).</li>
+            <li className="pl-2">From your laptop, open a tunnel and browse <span className="font-mono">http://localhost:8080</span>.</li>
+            <li className="pl-2">When you are ready for production, open a support ticket to publish <span className="font-mono">80</span>/<span className="font-mono">443</span>, then add the A record and a Caddy (or nginx) site for your hostname.</li>
           </ol>
-          <TerminalPreview showLineNumbers lines={["$ ping example.com", "PING example.com (102.89.13.22) 56(84) bytes of data."]} />
-          <p>Once it answers with your server's address, the internet can find it by name.</p>
+          <TerminalPreview showLineNumbers lines={[
+            "$ ssh -N root@102.89.13.22 -p 22003 -L 8080:localhost:3000",
+          ]} />
+          <p>Dashboard self-serve port mapping is on the roadmap; support-assisted publish is available today for cutovers.</p>
         </TryIt>
       </>
     ),
@@ -296,27 +310,77 @@ export const DOCS: DocSection[] = [
   {
     slug: "docker-caddy",
     title: "Docker & Caddy - reverse proxy superpowers",
-    description: "Run multiple apps on one server with Docker Compose, Caddy auto-HTTPS, and structured error handling.",
+    description: "Run Compose on shared instances, reverse-proxy with Caddy, preview over SSH, or go public after support publishes 80/443.",
     related: ["creating-an-instance", "networking-firewall", "ssh-access"],
     illustration: "/illustrations/docker-caddy.webp",
     body: (
       <>
         <Illustration src="/illustrations/docker-caddy.webp" alt="Docker and Caddy - containerized services with reverse proxy" />
+        <h2>Docker on NairaCloud</h2>
+        <p>Shared plans run Docker inside your instance without giving the instance full <span className="font-mono">--privileged</span> access. Dockerd starts on boot when Docker is installed in the image. Dedicated plans may use a fuller privilege profile; shared stays multi-tenant safe.</p>
+        <ul>
+          <li><span className="font-mono">docker run</span> and <span className="font-mono">docker compose</span> work on shared instances.</li>
+          <li>Your disk quota for Docker data is the plan's storage slice under <span className="font-mono">/var/lib/docker</span>.</li>
+          <li>Outbound SMTP (port 25) stays blocked at the node edge on every plan.</li>
+        </ul>
+        <h2>Quick check</h2>
+        <TerminalPreview showLineNumbers lines={[
+          "$ docker run --rm alpine echo ok",
+          "ok",
+          "$ docker compose version",
+        ]} />
+        <p>Current shared images start <span className="font-mono">dockerd</span> on boot. If <span className="font-mono">docker info</span> fails after a fresh login, wait a few seconds and try again, or open a support ticket -- you should not need to remount cgroups by hand.</p>
         <h2>Why Docker + Caddy</h2>
-        <p>Docker runs isolated services. Caddy handles TLS automatically.</p>
+        <p>Docker isolates each service. Caddy terminates TLS and routes hostnames to those services. Keep Caddy listening on <span className="font-mono">80</span>/<span className="font-mono">443</span> inside the instance. Preview with an SSH tunnel, or ask support to publish those ports on the node so your domain and Let's Encrypt work on the public internet (see <em>Networking &amp; firewall</em>).</p>
         <h2>Project structure</h2>
         <TerminalPreview showLineNumbers language="text" title="paths" lines={[
           "~/apps/api/docker-compose.yml",
           "~/apps/api/Caddyfile",
         ]} />
-        <TryIt title="Deploy a Go API with Caddy">
+        <h2>Example Compose stack</h2>
+        <TerminalPreview showLineNumbers language="yaml" title="docker-compose.yml" lines={[
+          "services:",
+          "  api:",
+          "    build: .",
+          "    restart: unless-stopped",
+          "    ports:",
+          '      - "3000:3000"',
+          "  caddy:",
+          "    image: caddy:2-alpine",
+          "    restart: unless-stopped",
+          "    ports:",
+          '      - "80:80"',
+          '      - "443:443"',
+          "    volumes:",
+          "      - ./Caddyfile:/etc/caddy/Caddyfile:ro",
+        ]} />
+        <TerminalPreview showLineNumbers language="text" title="Caddyfile" lines={[
+          "api.example.com {",
+          "  encode gzip",
+          "  reverse_proxy api:3000",
+          "}",
+        ]} />
+        <TryIt title="Bring up an API with Compose">
           <ol className="list-decimal space-y-1 pl-1">
-            <li className="pl-2">mkdir -p ~/apps/hello && cd ~/apps/hello</li>
-            <li className="pl-2">Create docker-compose.yml and Caddyfile</li>
-            <li className="pl-2">Run: docker compose up -d --build</li>
-            <li className="pl-2">Add A record for api.yourdomain.xyz to your server IP</li>
+            <li className="pl-2">SSH into your instance and create a project folder.</li>
+            <li className="pl-2">Add <span className="font-mono">docker-compose.yml</span> and a <span className="font-mono">Caddyfile</span> for your hostname.</li>
+            <li className="pl-2">Run <span className="font-mono">docker compose up -d --build</span>.</li>
+            <li className="pl-2">Confirm locally on the instance: <span className="font-mono">curl -s http://127.0.0.1:3000/</span>.</li>
+            <li className="pl-2">Preview from your laptop: <span className="font-mono">ssh -N -p &lt;sshPort&gt; -L 8080:localhost:3000 root@&lt;nodeIp&gt;</span>.</li>
+            <li className="pl-2">For a public domain: open a support ticket to publish <span className="font-mono">80</span>/<span className="font-mono">443</span>, then create an A record to the node IP. Caddy can obtain Let's Encrypt certificates once those ports answer.</li>
           </ol>
+          <TerminalPreview showLineNumbers lines={[
+            "$ mkdir -p ~/apps/hello && cd ~/apps/hello",
+            "$ docker compose up -d --build",
+            "$ curl -s http://127.0.0.1:3000/",
+          ]} />
+          <p>Self-serve port mapping in the dashboard is coming later. Support-assisted publish is the production path today.</p>
         </TryIt>
+        <h2>Plans and privileges</h2>
+        <ul>
+          <li><strong>Shared</strong> -- Docker works with a locked-down capability set (not full privileged). Enough for Compose, builds, and normal containers.</li>
+          <li><strong>Dedicated</strong> -- may use a fuller profile closer to a classic VPS when the plan enables it.</li>
+        </ul>
       </>
     ),
   },

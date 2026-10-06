@@ -187,16 +187,17 @@ export default function FirstVpsPage() {
               "$ apt update && apt upgrade -y",
               "$ apt install -y nginx",
               "$ systemctl enable --now nginx",
-              "$ curl -s http://$(hostname -I | awk '{print $1}') | head -5",
+              "$ curl -s http://127.0.0.1 | head -5",
               "<!DOCTYPE html> · Welcome to nginx! · _",
             ]} />
           </Reveal>
           <Reveal delay={150}>
             <p className="mt-6 text-base leading-relaxed text-text-muted">
-              nginx is up and the IP answered. Public web-port mapping isn't available yet, so to look at it in your
-              browser now, forward the port with SSH tunnel — then add a domain later (point an A record at your
-              server), drop your app in <span className="font-mono text-text">/var/www</span>, or swap nginx for Node,
-              Python, Go — whatever you build in.
+              nginx is up on the instance. To open it in your browser now, forward the port with an SSH tunnel. When
+              you are ready for a public domain, point an A record at your node IP and open a support ticket to publish
+              ports <span className="font-mono text-text">80</span>/<span className="font-mono text-text">443</span> —
+              then drop your app in <span className="font-mono text-text">/var/www</span>, or swap nginx for Node,
+              Python, Go, or Docker Compose with Caddy.
             </p>
           </Reveal>
         </div>

@@ -11,7 +11,7 @@ Paths are shown relative to the prefix, e.g. `/v1/instances`.
 
 ## Global Notes
 
-- **Authentication:** the `nc_access` cookie (JWT) set on `.nairacloud.xyz` (`HttpOnly`, `Secure`, `SameSite=Lax`). API keys are sent as `Authorization: Bearer nc_live_…`.
+- **Authentication:** the `nc_access` cookie (JWT) set on `.nairacloud.xyz` (`HttpOnly`, `Secure`, `SameSite=Lax`). API keys are sent as `Authorization: Bearer nc_live_…`. CS agent (n8n): `Authorization: Bearer nc_agent_…` plus `X-NairaCloud-Customer-Id` or `X-NairaCloud-Customer-Email`.
 - **Excluded from the `v1` prefix** (no `/v1`): `/health`, `/ready`, `/metrics`, `/docs`, `/docs-json`, `/openapi.json`, and everything under `/internal/*`.
 - **Responses:** success `{ success: true, data }`; errors `{ success: false, error: { code, message, details? }, requestId }`.
 - **Admin endpoints** require `role=ADMIN` (cookie auth).
@@ -157,6 +157,7 @@ Paths are shown relative to the prefix, e.g. `/v1/instances`.
 | `GET` | `/v1/billing/subscriptions` | List subscriptions |
 | `PATCH` | `/v1/billing/subscriptions/:id` | Update subscription (cancel / upgrade / downgrade) |
 | `GET` | `/v1/billing/invoices` | List invoices |
+| `GET` | `/v1/billing/invoices/:id` | Invoice details |
 | `GET` | `/v1/billing/invoices/:id/pdf` | Invoice (JSON with `url`, or `html` to print/save as PDF) |
 | `GET` | `/v1/billing/payment-methods` | List payment methods |
 | `POST` | `/v1/billing/payment-methods` | Add payment method |
@@ -174,6 +175,17 @@ Paths are shown relative to the prefix, e.g. `/v1/instances`.
 | `POST` | `/v1/support/:id/reply` | Reply to ticket |
 | `POST` | `/v1/support/:id/messages` | Add message to ticket |
 | `PATCH` | `/v1/support/:id` | Update ticket |
+
+---
+
+## CS Agent (`/v1/cs-agent`) — *nc_agent_ key*
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/v1/cs-agent/customers` | Lookup customer by `?email=` or `?id=` |
+| `GET` | `/v1/cs-agent/customers/:id` | Customer account summary |
+
+Admin: `POST|GET /v1/admin/cs-agent-keys`, `DELETE /v1/admin/cs-agent-keys/:id`. Full n8n guide: Backend `docs/CS_AGENT.md`.
 
 ---
 
