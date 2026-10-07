@@ -11,8 +11,6 @@ import {
   TerminalWindow,
 } from "@phosphor-icons/react/dist/ssr";
 import { TerminalPreview } from "@nairacloud/ui";
-import { SiteNav } from "@/components/site-nav";
-import { SiteFooter } from "@/components/site-footer";
 import { Reveal } from "@/components/reveal";
 import { HeroBackground } from "@/components/hero-background";
 import { HoverCard } from "@/components/hover-card";
@@ -50,11 +48,10 @@ const OPS = [
 
 export default function FirstVpsPage() {
   return (
-    <div className="bg-bg min-h-screen text-text overflow-x-hidden font-sans selection:bg-accent/30 selection:text-text">
-      <SiteNav />
+    <div className="min-h-[100dvh] overflow-x-clip bg-bg font-sans text-text selection:bg-accent/30 selection:text-text">
 
       {/* Hero */}
-      <section className="relative mx-auto max-w-7xl px-4 pb-20 pt-28 sm:px-6 md:pb-28 md:pt-36 lg:pt-44">
+      <section className="relative isolate mx-auto max-w-7xl px-4 pb-20 pt-16 sm:px-6 sm:pt-20 md:pb-28 lg:pt-28">
         <HeroBackground />
         <div className="mx-auto max-w-3xl text-center">
           <Reveal>
@@ -240,8 +237,6 @@ export default function FirstVpsPage() {
           </Reveal>
         </div>
       </section>
-
-      <SiteFooter />
     </div>
   );
 }

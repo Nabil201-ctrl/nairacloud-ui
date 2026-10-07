@@ -63,6 +63,8 @@ independent releases, fail-closed RBAC. Never import admin code into web.
   dropdown-menu, dialog, sheet, tabs, table, badge, card, sonner toast,
   tooltip, progress, skeleton, command (Cmd+K), avatar, separator, switch,
   checkbox, radio-group, alert, popover, accordion, pagination.
+  Add more with `npm run ui:add -- <name>` (never `shadcn init`); how-to and
+  token mapping: `packages/ui/README.md`. Live reference: `/ui-kit` (dev only).
 - Custom once, reuse everywhere: StatusDot, ResourceGauge, PlanCard,
   CopyField, TerminalPreview, EmptyState, CapacityBanner, PriceTag, Timeline.
 - Layouts: `MarketingLayout` (nav+footer) · `AuthLayout` (centered card) ·

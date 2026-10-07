@@ -10,14 +10,33 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-::selection { background: var(--accent); color: var(--accent-fg); }
+::selection {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
 
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* Base layer so component utilities (outline-none + ring) can override it. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
 
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 6px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
 
 .eyebrow {
   display: inline-flex;
@@ -34,73 +53,172 @@ body {
   background: var(--surface);
 }
 
-.card-lift { transition: border-color 150ms ease; }
-.card-lift:hover { border-color: var(--border); }
+.card-lift {
+  transition: border-color 150ms ease;
+}
+.card-lift:hover {
+  border-color: var(--border);
+}
 
-.press { transition: background-color 150ms ease, border-color 150ms ease, opacity 150ms ease; }
-.press:active { opacity: 0.92; }
+.press {
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    opacity 150ms ease;
+}
+.press:active {
+  opacity: 0.92;
+}
 
 .elev-1 {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.4),
+    0 1px 2px rgba(0, 0, 0, 0.3);
 }
 .elev-2 {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.25);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 2px 6px rgba(0, 0, 0, 0.25);
 }
 .elev-3 {
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.45),
+    0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 @keyframes rise {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.reveal { opacity: 0; }
-.reveal.is-visible { animation: rise 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.reveal {
+  opacity: 0;
+}
+.reveal.is-visible {
+  animation: rise 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-.cursor-blink { animation: blink 1.1s steps(1) infinite; }
+/* Staggered entry for product visuals; set animation-delay inline. */
+.nc-in {
+  opacity: 0;
+  animation: rise 450ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 
-@keyframes soft-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
-.dot-live { animation: soft-pulse 2s ease-in-out infinite; }
-.status-pulse { animation: soft-pulse 2.5s ease-in-out infinite; }
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+.cursor-blink {
+  animation: blink 1.1s steps(1) infinite;
+}
+
+@keyframes soft-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.dot-live {
+  animation: soft-pulse 2s ease-in-out infinite;
+}
+.status-pulse {
+  animation: soft-pulse 2.5s ease-in-out infinite;
+}
 
 @keyframes page-fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 .page-fade {
   animation: page-fade 250ms ease-out forwards;
 }
 
 @keyframes slide-in-from-left {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(0); }
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 @keyframes slide-in-from-right {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 @keyframes slide-in-from-top {
-  from { transform: translateY(-100%); }
-  to { transform: translateY(0); }
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 @keyframes slide-in-from-bottom {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
-.slide-in-from-left { animation: slide-in-from-left 300ms ease-out forwards; }
-.slide-in-from-right { animation: slide-in-from-right 300ms ease-out forwards; }
-.slide-in-from-top { animation: slide-in-from-top 300ms ease-out forwards; }
-.slide-in-from-bottom { animation: slide-in-from-bottom 300ms ease-out forwards; }
+.slide-in-from-left {
+  animation: slide-in-from-left 300ms ease-out forwards;
+}
+.slide-in-from-right {
+  animation: slide-in-from-right 300ms ease-out forwards;
+}
+.slide-in-from-top {
+  animation: slide-in-from-top 300ms ease-out forwards;
+}
+.slide-in-from-bottom {
+  animation: slide-in-from-bottom 300ms ease-out forwards;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; }
-  .reveal.is-visible { animation: none; }
-  .cursor-blink, .dot-live, .page-fade { animation: none; }
-  html { scroll-behavior: auto; }
+  .reveal {
+    opacity: 1;
+  }
+  .reveal.is-visible {
+    animation: none;
+  }
+  .cursor-blink,
+  .dot-live,
+  .page-fade {
+    animation: none;
+  }
+  .nc-in {
+    opacity: 1;
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 .docs-body h2 {
   margin-top: 2.5rem;
@@ -111,7 +229,9 @@ html { scroll-behavior: smooth; }
   letter-spacing: -0.02em;
   color: var(--text);
 }
-.docs-body h2:first-child { margin-top: 0; }
+.docs-body h2:first-child {
+  margin-top: 0;
+}
 .docs-body h3 {
   margin-top: 1.75rem;
   margin-bottom: 0.5rem;
@@ -120,26 +240,46 @@ html { scroll-behavior: smooth; }
   font-weight: 600;
   color: var(--text);
 }
-.docs-body p { color: var(--text-secondary); }
-.docs-body p + p { margin-top: 1rem; }
+.docs-body p {
+  color: var(--text-secondary);
+}
+.docs-body p + p {
+  margin-top: 1rem;
+}
 .docs-body a {
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
-.docs-body a:hover { color: var(--accent-hover); }
-.docs-body ul, .docs-body ol {
+.docs-body a:hover {
+  color: var(--accent-hover);
+}
+.docs-body ul,
+.docs-body ol {
   margin-top: 1rem;
   color: var(--text-secondary);
   padding-left: 1.25rem;
   list-style: disc;
 }
-.docs-body ol { list-style: decimal; }
-.docs-body li { margin-top: 0.4rem; }
-.docs-body li::marker { color: var(--accent); }
-.docs-body strong { color: var(--text); font-weight: 600; }
-.docs-body em { color: var(--text); }
-.docs-body pre { margin-top: 1.25rem; }
+.docs-body ol {
+  list-style: decimal;
+}
+.docs-body li {
+  margin-top: 0.4rem;
+}
+.docs-body li::marker {
+  color: var(--accent);
+}
+.docs-body strong {
+  color: var(--text);
+  font-weight: 600;
+}
+.docs-body em {
+  color: var(--text);
+}
+.docs-body pre {
+  margin-top: 1.25rem;
+}
 .docs-body code {
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 0.85em;
@@ -151,4 +291,57 @@ html { scroll-behavior: smooth; }
 }
 .docs-body .nc-code-block code {
   font-size: inherit;
+}
+
+/* ── Marketing site ─────────────────────────────────────────────────────
+ * Outfit for UI text (mono stays IBM Plex Mono). Set on the (marketing)
+ * layout wrapper so the dashboard keeps its own type.
+ */
+.marketing {
+  --font-sans: var(--font-darker-grotesque);
+  font-family: var(--font-darker-grotesque), system-ui, sans-serif;
+}
+
+@layer components {
+  /* Elevation: page (--bg) < bands (--sidebar, darker) < panels (--surface/--main) < raised.
+   * Built from tokens; only the shadows use black. */
+  .elev-panel {
+    background: linear-gradient(180deg, var(--main) 0%, var(--card) 100%);
+    border: 1px solid var(--border);
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
+      0 1px 2px rgba(0, 0, 0, 0.3),
+      0 18px 40px -18px rgba(0, 0, 0, 0.6);
+  }
+  .elev-raised {
+    background: linear-gradient(180deg, var(--surface) 0%, var(--main) 100%);
+    border: 1px solid var(--border-hover);
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.07),
+      0 2px 4px rgba(0, 0, 0, 0.3),
+      0 30px 70px -24px rgba(0, 0, 0, 0.75);
+  }
+  .elev-inset {
+    background: var(--sidebar);
+    border: 1px solid var(--border-subtle);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.35);
+  }
+}
+
+/* Infinite strip; the list is rendered twice so -50% loops seamlessly. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee {
+  animation: marquee 45s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    animation: none;
+  }
 }

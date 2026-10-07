@@ -1,0 +1,10 @@
+{
+  "extends": "../config/tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@nairacloud/ui/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "../config/global.d.ts"]
+}

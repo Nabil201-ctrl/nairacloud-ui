@@ -1,4 +1,4 @@
-import { cn } from "./cn";
+import { cn } from "../lib/utils";
 
 export type InstanceStatus = "Running" | "Stopped" | "Error" | "Suspended" | "Creating" | "Paused";
 

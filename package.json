@@ -3,17 +3,15 @@
   "private": true,
   "version": "0.1.0",
   "description": "NairaCloud frontend — customer app, admin app, shared UI packages, and marketing waitlist. Frontend-only, no backend.",
-  "workspaces": [
-    "frontend",
-    "waitlist"
-  ],
+  "//": "Not a workspace root. frontend/ and waitlist/ are independent npm projects with their own lockfiles (npm does not support nested workspaces). These scripts just forward.",
   "scripts": {
-    "dev": "npm run dev --workspace=frontend --prefix frontend",
-    "typecheck": "npm run typecheck --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present",
-    "test": "npm run test --workspaces --if-present"
-  },
-  "devDependencies": {
-    "typescript": "^5.6.2"
+    "install:frontend": "npm --prefix frontend install",
+    "install:waitlist": "npm --prefix waitlist install",
+    "dev:web": "npm --prefix frontend run dev:web",
+    "dev:admin": "npm --prefix frontend run dev:admin",
+    "build": "npm --prefix frontend run build",
+    "typecheck": "npm --prefix frontend run typecheck",
+    "lint": "npm --prefix frontend run lint",
+    "test": "npm --prefix frontend run test"
   }
 }

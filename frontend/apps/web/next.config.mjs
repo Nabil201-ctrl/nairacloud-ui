@@ -2,9 +2,15 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // Shared workspace packages ship TypeScript source.
+  transpilePackages: ["@nairacloud/ui", "@nairacloud/api-client"],
   output: 'standalone',
   // Required for instrumentation.ts on Next.js 14.x
-  experimental: { instrumentationHook: true },
+  experimental: {
+    instrumentationHook: true,
+    // Phosphor ships one barrel of ~9k modules; without this every page compiles all of them.
+    optimizePackageImports: ["@phosphor-icons/react", "@phosphor-icons/react/dist/ssr"],
+  },
   async headers() {
     const scriptSrc = [
       "'self'",

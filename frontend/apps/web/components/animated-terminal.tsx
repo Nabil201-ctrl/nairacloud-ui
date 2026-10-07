@@ -1,67 +1,53 @@
-"use client";
+import type { CSSProperties } from "react";
+import { CheckCircle } from "@phosphor-icons/react/dist/ssr";
+import { CopyField, StatusDot } from "@nairacloud/ui";
 
-import { motion } from "framer-motion";
-import { CopyField } from "@nairacloud/ui";
-
-const lines = [
-  { type: "input", content: "nairacloud deploy --plan starter", delay: 0 },
-  { type: "status", content: "Payment verified · Paystack", delay: 1.2 },
-  { type: "status", content: "Server assigned · SRV-LAG-02", delay: 1.8 },
-  { type: "status", content: "Instance booting · Ubuntu 24.04", delay: 2.5 },
-  { type: "output", content: "ssh root@197.210.29.4", delay: 3.5 },
+const STEPS = [
+  { content: "Payment verified · Paystack", delay: 0.9 },
+  { content: "Server assigned · SRV-LAG-02", delay: 1.5 },
+  { content: "Instance booting · Ubuntu 24.04", delay: 2.1 },
 ];
 
+const delay = (s: number) => ({ animationDelay: `${s}s` }) as CSSProperties;
+
+/** Hero product shot: a framed deploy session. CSS-only staggered entry (static under reduced motion). */
 export function AnimatedTerminal() {
   return (
-    <div className="rounded-xl border border-border/40 bg-surface-hover/30 p-2 shadow-2xl backdrop-blur-xl ring-1 ring-white/5">
-      <div className="overflow-hidden rounded-lg border border-border/60 bg-bg shadow-inner">
-        <div className="flex items-center justify-between border-b border-border/60 bg-surface/50 px-4 py-3" aria-hidden>
-          <div className="flex items-center gap-2">
-            <span className="h-3 w-3 rounded-full bg-danger/60" />
-            <span className="h-3 w-3 rounded-full bg-warning/60" />
-            <span className="h-3 w-3 rounded-full bg-success/60" />
+    <div className="relative rounded-2xl border border-border bg-card/70 p-1.5 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.7)]">
+      <div className="overflow-hidden rounded-xl border border-border-subtle bg-bg">
+        <div className="flex items-center justify-between border-b border-border-subtle px-4 py-3" aria-hidden>
+          <div className="flex gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-border-hover" />
+            <span className="h-2.5 w-2.5 rounded-full bg-border-hover" />
+            <span className="h-2.5 w-2.5 rounded-full bg-border-hover" />
           </div>
-          <span className="font-mono text-[11px] font-medium tracking-wider text-text-muted/80">deploy — nairacloud</span>
-          <div className="w-11" />
+          <span className="font-mono text-[11px] text-text-muted">deploy — nairacloud</span>
+          <span className="w-10" />
         </div>
-        
-        <div className="space-y-3 p-6 font-mono text-[13px] leading-relaxed">
-          {lines.map((line, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: line.delay, duration: 0.3 }}
-            >
-              {line.type === "input" && (
-                <p className="flex items-center gap-3">
-                  <span className="text-accent font-bold">$</span> 
-                  <span className="text-text">{line.content}</span>
-                </p>
-              )}
-              {line.type === "status" && (
-                <p className="text-text-muted/80 ml-5">{line.content}</p>
-              )}
-              {line.type === "output" && (
-                <div className="pt-2 ml-5">
-                  <CopyField value={line.content} label="SSH string" />
-                  <motion.p 
-                    initial={{ opacity: 0 }} 
-                    animate={{ opacity: 1 }} 
-                    transition={{ delay: line.delay + 0.8 }}
-                    className="mt-3 text-text font-medium flex items-center gap-2"
-                  >
-                    Ready in 42s 
-                    <motion.span 
-                      animate={{ opacity: [1, 0] }}
-                      transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
-                      className="inline-block h-3.5 w-2 bg-accent" 
-                    />
-                  </motion.p>
-                </div>
-              )}
-            </motion.div>
+
+        <div className="space-y-3.5 px-5 py-6 font-mono text-[13px] leading-relaxed sm:px-6">
+          <p className="nc-in flex items-center gap-3">
+            <span className="text-accent">$</span>
+            <span className="text-text">nairacloud deploy --plan starter</span>
+          </p>
+          {STEPS.map((s) => (
+            <p key={s.content} className="nc-in flex items-center gap-2.5 pl-5 text-text-secondary" style={delay(s.delay)}>
+              <CheckCircle weight="fill" className="h-3.5 w-3.5 shrink-0 text-accent" aria-hidden />
+              {s.content}
+            </p>
           ))}
+          <div className="nc-in pl-5 pt-1" style={delay(2.9)}>
+            <CopyField value="ssh root@197.210.29.4" label="SSH string" />
+          </div>
+          <p className="nc-in flex items-center gap-2 pl-5 text-text" style={delay(3.5)}>
+            Ready in 42s
+            <span aria-hidden className="cursor-blink inline-block h-3.5 w-1.5 bg-accent" />
+          </p>
+        </div>
+
+        <div className="nc-in flex items-center justify-between border-t border-border-subtle bg-card/60 px-5 py-3 sm:px-6" style={delay(3.5)}>
+          <StatusDot status="RUNNING" />
+          <span className="font-mono text-[11px] text-text-muted">SRV-LAG-02 · Ubuntu 24.04</span>
         </div>
       </div>
     </div>

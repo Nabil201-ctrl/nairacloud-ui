@@ -1,1 +1,9 @@
-{"name": "@nairacloud/config", "version": "0.1.0", "private": true, "main": "index.js"}
+{
+  "name": "@nairacloud/config",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "dependencies": {
+    "tailwindcss-animate": "^1.0.7"
+  }
+}

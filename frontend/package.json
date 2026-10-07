@@ -2,10 +2,14 @@
   "name": "nairacloud-frontend",
   "private": true,
   "version": "0.1.0",
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev:web": "npm run dev --workspace=@nairacloud/web",
     "dev:admin": "npm run dev --workspace=@nairacloud/admin",
+    "ui:add": "npm run ui:add --workspace=@nairacloud/ui --",
     "build": "npm run build --workspace=@nairacloud/web && npm run build --workspace=@nairacloud/admin",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",

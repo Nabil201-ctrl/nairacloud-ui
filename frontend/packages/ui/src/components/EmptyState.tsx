@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { EmptyInstances, EmptySshKeys, EmptyGeneric } from "./components/EmptyStateIllustrations";
+import { EmptyInstances, EmptySshKeys, EmptyGeneric } from "./EmptyStateIllustrations";
 
 export type EmptyStateVariant = "instances" | "ssh-keys" | "generic";
 

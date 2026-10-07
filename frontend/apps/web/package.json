@@ -1,1 +1,41 @@
-{"name":"@nairacloud/web","version":"0.1.0","private":true,"scripts":{"dev":"next dev -p 3001","build":"next build","start":"next start -p 3001","typecheck":"tsc --noEmit","lint":"next lint","test":"playwright test","test:ui":"playwright test --ui","test:headed":"playwright test --headed"},"dependencies":{"@nairacloud/api-client":"*","@nairacloud/ui":"*","@phosphor-icons/react":"^2.1.10","@tanstack/react-query":"^5.51.1","framer-motion":"^13.2.0","geist":"^1.7.2","next":"^14.2.35","react":"18.3.1","react-dom":"18.3.1","recharts":"^3.10.1","socket.io-client":"^4.7.5","sonner":"^2.0.8","zod":"^4.6.2","zustand":"^4.5.4"},"devDependencies":{"@types/node":"^22.7.4","@types/react":"^18.3.5","@types/react-dom":"^18.3.0","autoprefixer":"^10.4.20","postcss":"^8.4.47","tailwindcss":"^3.4.12","typescript":"^5.6.2"}}
+{
+  "name": "@nairacloud/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "typecheck": "tsc --noEmit",
+    "lint": "next lint",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "mock:api": "node scripts/mock-public-api.mjs"
+  },
+  "dependencies": {
+    "@nairacloud/api-client": "*",
+    "@nairacloud/ui": "*",
+    "@phosphor-icons/react": "^2.1.10",
+    "@tanstack/react-query": "^5.51.1",
+    "framer-motion": "^13.2.0",
+    "geist": "^1.7.2",
+    "next": "^14.2.35",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "recharts": "^3.10.1",
+    "socket.io-client": "^4.7.5",
+    "sonner": "^2.0.8",
+    "zod": "^4.6.2",
+    "zustand": "^4.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.4",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.12",
+    "typescript": "^5.6.2"
+  }
+}

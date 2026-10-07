@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Timeline } from "@nairacloud/ui";
-import { SiteNav } from "@/components/site-nav";
-import { SiteFooter } from "@/components/site-footer";
 import { Reveal } from "@/components/reveal";
 import { getPublicStatus, getIncidents } from "@/lib/public";
 
@@ -26,7 +24,6 @@ export default async function StatusPage() {
 
   return (
     <>
-      <SiteNav />
       <section className="mx-auto max-w-4xl px-4 pb-16 pt-16 md:pt-24">
         <Reveal>
           <p className="eyebrow">Status</p>
@@ -72,7 +69,6 @@ export default async function StatusPage() {
           </div>
         </Reveal>
       </section>
-      <SiteFooter />
     </>
   );
 }

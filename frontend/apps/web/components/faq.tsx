@@ -1,29 +1,16 @@
-"use client";
-
-import { useState } from "react";
-import { Plus } from "@phosphor-icons/react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@nairacloud/ui";
 
 export function Faq({ items }: { items: Array<{ q: string; a: string }> }) {
-  const [open, setOpen] = useState<number | null>(0);
   return (
-    <div>
-      {items.map((it, i) => {
-        const isOpen = open === i;
-        return (
-          <div key={it.q} className="border-b border-border">
-            <button
-              type="button"
-              aria-expanded={isOpen}
-              onClick={() => setOpen(isOpen ? null : i)}
-              className="flex w-full items-center justify-between gap-4 py-5 text-left font-medium hover:text-accent"
-            >
-              {it.q}
-              <Plus size={18} aria-hidden className={`shrink-0 transition-transform duration-200 ${isOpen ? "rotate-45" : ""}`} />
-            </button>
-            {isOpen && <p className="max-w-[65ch] pb-5 text-sm leading-relaxed text-text-muted">{it.a}</p>}
-          </div>
-        );
-      })}
-    </div>
+    <Accordion type="single" collapsible defaultValue="faq-0" className="border-t border-border">
+      {items.map((it, i) => (
+        <AccordionItem key={it.q} value={`faq-${i}`} className="border-border">
+          <AccordionTrigger className="py-5 text-left text-[15px] font-medium text-text hover:no-underline [&[data-state=open]]:text-text [&>svg]:text-text-muted">
+            {it.q}
+          </AccordionTrigger>
+          <AccordionContent className="max-w-[65ch] pb-5 text-[15px] leading-relaxed text-text-muted">{it.a}</AccordionContent>
+        </AccordionItem>
+      ))}
+    </Accordion>
   );
 }

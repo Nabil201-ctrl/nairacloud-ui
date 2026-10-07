@@ -1,32 +1,32 @@
 :root {
-  /* Page chrome - Slate grey theme */
-  --bg: #1e2024;
-  --sidebar: #1a1c21;
-  --topnav: #1a1c21;
+  /* Page chrome - Deep slate theme */
+  --bg: #0c0d10;
+  --sidebar: #08090b;
+  --topnav: #08090b;
 
   /* Surfaces */
-  --main: #25272c;
-  --card: #1f2126;
-  --surface: #2a2d33;
-  --surface-secondary: #2a2d33;
-  --surface-hover: #33373e;
-  --nav-active: #2d4a43;
-  --nav-hover: #25282e;
-  --control: #24272d;
-  --control-active: #3a3f47;
-  --segment: #282b31;
-  --segment-active: #2d4a43;
-  --ring-track: #363a42;
-  --mobile-nav: #1f2126;
+  --main: #131418;
+  --card: #0f1013;
+  --surface: #17191d;
+  --surface-secondary: #17191d;
+  --surface-hover: #1e2025;
+  --nav-active: #173029;
+  --nav-hover: #121317;
+  --control: #121317;
+  --control-active: #23262b;
+  --segment: #101114;
+  --segment-active: #173029;
+  --ring-track: #23262b;
+  --mobile-nav: #0f1013;
 
   /* Borders — extremely subtle */
   --border: rgba(255, 255, 255, 0.08);
   --border-hover: rgba(255, 255, 255, 0.12);
   --border-subtle: rgba(255, 255, 255, 0.05);
   --border-faint: rgba(255, 255, 255, 0.03);
-  --border-control: #3d4149;
-  --border-segment: #30343c;
-  --border-secondary: #363a42;
+  --border-control: #2a2d33;
+  --border-segment: #1f2227;
+  --border-secondary: #23262b;
 
   /* Text */
   --text: #f0f1f3;
@@ -47,6 +47,27 @@
   --warning: #cca700;
   --info: #3794ff;
   --success: #4ec9b0;
+
+  /*
+   * shadcn/ui semantic roles — aliases only, never new colors.
+   * Primary CTA is white-on-dark (brand rule); green stays for small highlights.
+   * shadcn's "accent" (hover surface) is NOT mapped: our --accent is the brand
+   * green. `npm run ui:add` rewrites it to surface-hover.
+   */
+  --background: var(--bg);
+  --foreground: var(--text);
+  --card-foreground: var(--text);
+  --popover: var(--control);
+  --popover-foreground: var(--text);
+  --primary: var(--text);
+  --primary-foreground: var(--bg);
+  --secondary: var(--surface);
+  --secondary-foreground: var(--text);
+  --muted-foreground: var(--text-muted);
+  --destructive: var(--danger);
+  --destructive-foreground: var(--bg);
+  --input: var(--border-control);
+  --ring: var(--accent);
 
   /* Radius */
   --radius-sm: 6px;

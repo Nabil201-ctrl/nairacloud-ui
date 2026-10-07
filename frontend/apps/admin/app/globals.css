@@ -22,7 +22,10 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* Base layer so component utilities (outline-none + ring) can override it. */
+@layer base {
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+}
 
 /* Slim dark scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
