@@ -56,14 +56,13 @@ export function HeroConsole() {
   return (
     <div ref={ref} className="relative">
       {/* depth: soft light behind the window */}
-      <div aria-hidden className="absolute -inset-10 -z-10 rounded-[40px] bg-accent/[0.06] blur-3xl" />
 
       <motion.div
         initial={{ opacity: 0, y: 24, rotateX: 8 }}
         animate={{ opacity: 1, y: 0, rotateX: 0 }}
         transition={{ duration: 1, ease: EASE, delay: 0.2 }}
         style={{ transformPerspective: 1200 }}
-        className="bg-card rounded-2xl p-1.5"
+        className="rounded-2xl border border-border bg-card p-1.5"
       >
         <div className="overflow-hidden rounded-xl border border-border-subtle bg-sidebar">
           <div className="flex items-center justify-between border-b border-border-subtle px-4 py-3">
@@ -152,7 +151,7 @@ export function HeroConsole() {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0, y: reduced ? 0 : [0, -8, 0] }}
         transition={{ opacity: { delay: 0.9, duration: 0.6 }, x: { delay: 0.9, duration: 0.8, ease: EASE }, y: { duration: 6, repeat: Infinity, ease: "easeInOut" } }}
-        className="bg-card absolute -left-10 top-16 hidden w-52 rounded-xl p-4 xl:block"
+        className="absolute -left-[13.5rem] top-10 hidden w-52 rounded-xl border border-border bg-card p-4 xl:block"
       >
         <div className="flex items-center gap-2 text-[12px] text-text-secondary">
           <Receipt className="h-4 w-4 text-text-muted" /> Invoice NC-2041
@@ -169,7 +168,7 @@ export function HeroConsole() {
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0, y: reduced ? 0 : [0, 8, 0] }}
         transition={{ opacity: { delay: 1.2, duration: 0.6 }, x: { delay: 1.2, duration: 0.8, ease: EASE }, y: { duration: 7, repeat: Infinity, ease: "easeInOut" } }}
-        className="bg-card absolute -bottom-10 -right-8 hidden w-56 rounded-xl p-4 xl:block"
+        className="absolute -right-[13.5rem] bottom-12 hidden w-52 rounded-xl border border-border bg-card p-4 xl:block"
       >
         <div className="flex items-center justify-between text-[12px] text-text-secondary">
           <span>CPU · api-prod</span>

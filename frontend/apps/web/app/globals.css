@@ -294,38 +294,20 @@ html {
 }
 
 /* ── Marketing site ─────────────────────────────────────────────────────
- * Outfit for UI text (mono stays IBM Plex Mono). Set on the (marketing)
+ * Host Grotesk for UI text (mono stays IBM Plex Mono). Set on the (marketing)
  * layout wrapper so the dashboard keeps its own type.
  */
 .marketing {
-  --font-sans: var(--font-darker-grotesque);
-  font-family: var(--font-darker-grotesque), system-ui, sans-serif;
+  --font-sans: var(--font-host-grotesk);
+  font-family: var(--font-host-grotesk), system-ui, sans-serif;
 }
 
 @layer components {
-  /* Elevation: page (--bg) < bands (--sidebar, darker) < panels (--surface/--main) < raised.
-   * Built from tokens; only the shadows use black. */
-  .elev-panel {
-    background: linear-gradient(180deg, var(--main) 0%, var(--card) 100%);
-    border: 1px solid var(--border);
-    box-shadow:
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
-      0 1px 2px rgba(0, 0, 0, 0.3),
-      0 18px 40px -18px rgba(0, 0, 0, 0.6);
-  }
-  .elev-raised {
-    background: linear-gradient(180deg, var(--surface) 0%, var(--main) 100%);
-    border: 1px solid var(--border-hover);
-    box-shadow:
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.07),
-      0 2px 4px rgba(0, 0, 0, 0.3),
-      0 30px 70px -24px rgba(0, 0, 0, 0.75);
-  }
-  .elev-inset {
-    background: var(--sidebar);
-    border: 1px solid var(--border-subtle);
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.35);
-  }
+  /* Flat elevation: depth comes from tone + hairlines only (no shadows, no gradients).
+   * page --bg < inset --sidebar < panel --main < raised --surface */
+  .elev-panel { background: var(--main); border: 1px solid var(--border); }
+  .elev-raised { background: var(--surface); border: 1px solid var(--border-hover); }
+  .elev-inset { background: var(--sidebar); border: 1px solid var(--border-subtle); }
 }
 
 /* Infinite strip; the list is rendered twice so -50% loops seamlessly. */

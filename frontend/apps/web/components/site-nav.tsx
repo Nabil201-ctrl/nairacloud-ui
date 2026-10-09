@@ -66,7 +66,7 @@ export function SiteNav() {
         </div>
 
         <div className="hidden md:block">
-          <Button asChild size="sm" className="h-8 rounded-full px-4 text-[13px]">
+          <Button asChild size="sm">
             <a href={WAITLIST_URL}>Join waitlist</a>
           </Button>
         </div>
@@ -100,7 +100,7 @@ export function SiteNav() {
             ))}
           </ul>
           <div className="px-5 pt-8">
-            <Button asChild size="lg" className="h-12 w-full rounded-full text-base">
+            <Button asChild size="lg" className="w-full">
               <a href={WAITLIST_URL}>Join waitlist</a>
             </Button>
           </div>

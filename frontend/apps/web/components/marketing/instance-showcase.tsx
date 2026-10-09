@@ -106,10 +106,6 @@ export function InstanceShowcase() {
 
   return (
     <div ref={ref} className="relative [perspective:1600px]">
-      <div
-        aria-hidden
-        className="absolute inset-x-[10%] -top-10 -z-10 h-64 rounded-full bg-accent/[0.07] blur-3xl"
-      />
       <motion.div
         style={{ rotateX, scale, transformOrigin: "50% 0%" }}
         className="bg-card overflow-hidden rounded-2xl p-1.5"

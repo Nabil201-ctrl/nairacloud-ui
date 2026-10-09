@@ -24,11 +24,10 @@ export function CtaOrbit() {
           transition={{ duration: r.dur, repeat: Infinity, ease: "linear" }}
         >
           <span
-            className={`absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full ${r.dot} shadow-[0_0_14px_3px] shadow-accent/40`}
+            className={`absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full ${r.dot}`}
           />
         </motion.div>
       ))}
-      <div className="absolute h-72 w-72 rounded-full bg-accent/[0.08] blur-3xl" />
     </div>
   );
 }

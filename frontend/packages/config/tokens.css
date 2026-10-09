@@ -75,3 +75,46 @@
   --radius-lg: 12px;
   --radius-mobile-nav: 16px;
 }
+
+/*
+ * Marketing site (apps/web (marketing) layout). Same cool-slate hue as :root,
+ * lifted so surfaces separate by tone alone (no shadows):
+ *   inset wells < page < card < panel < raised
+ * Dashboard and admin keep :root.
+ */
+.marketing {
+  --sidebar: #121418;      /* inset wells, footer, darker bands */
+  --topnav: #121418;
+  --bg: #17191d;           /* page */
+  --card: #1d2025;         /* cards, grid cells */
+  --main: #22252b;         /* panels, featured cells, pills */
+  --surface: #292d34;      /* raised: chips, secondary buttons, mock UI */
+  --surface-secondary: #292d34;
+  --surface-hover: #30343c;
+  --control: #22252b;      /* popovers, menus */
+  --control-active: #30343c;
+  --nav-active: #1b3832;
+  --nav-hover: #1d2025;
+  --segment: #1d2025;
+  --segment-active: #1b3832;
+  --ring-track: #30343c;
+  --mobile-nav: #1d2025;
+
+  --border: rgba(255, 255, 255, 0.09);
+  --border-hover: rgba(255, 255, 255, 0.14);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-faint: rgba(255, 255, 255, 0.035);
+  --border-control: #353a42;
+
+  --text-muted: #858b95;   /* AA (≥4.5:1) on both page and card */
+  --muted: #858b95;
+
+  /* shadcn aliases resolve where declared, so restate them for this scope. */
+  --background: var(--bg);
+  --popover: var(--control);
+  --primary-foreground: var(--bg);
+  --secondary: var(--surface);
+  --muted-foreground: var(--text-muted);
+  --destructive-foreground: var(--bg);
+  --input: var(--border-control);
+}

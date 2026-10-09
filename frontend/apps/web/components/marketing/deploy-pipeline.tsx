@@ -22,7 +22,7 @@ export function DeployPipeline() {
       <div aria-hidden className="absolute left-[12.5%] right-[12.5%] top-[4.25rem] hidden h-px bg-border lg:block">
         <motion.div className="h-px bg-accent" animate={{ width: `${pct}%` }} transition={{ duration: 0.9, ease: EASE }} />
         <motion.span
-          className="absolute -top-[3px] h-[7px] w-[7px] -translate-x-1/2 rounded-full bg-accent shadow-[0_0_12px_2px] shadow-accent/60"
+          className="absolute -top-[3px] h-[7px] w-[7px] -translate-x-1/2 rounded-full bg-accent"
           animate={{ left: `${pct}%` }}
           transition={{ duration: 0.9, ease: EASE }}
         />

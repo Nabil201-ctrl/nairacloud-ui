@@ -233,15 +233,15 @@ export function TerminalVisual() {
   const { ref, step } = useLoopStep(2, 5200);
   return (
     <Stage stageRef={ref} className="items-stretch justify-start p-5">
-      <div className="flex w-full flex-col justify-between gap-4 sm:flex-row">
-        <div className="space-y-2 font-mono text-[12px] sm:text-[13px]">
+      <div className="flex w-full flex-col justify-between gap-4">
+        <div className="space-y-2 overflow-hidden font-mono text-[12px]">
           {TERM.map((l, i) => (
             <motion.p
               key={`${l.t}-${step}`}
               initial={{ opacity: 0, x: -6 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5 * i, duration: 0.35, ease: EASE }}
-              className={l.c}
+              className={cn("whitespace-nowrap", l.c)}
             >
               {l.t}
             </motion.p>
@@ -252,7 +252,7 @@ export function TerminalVisual() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 2.2, duration: 0.5, ease: EASE }}
-          className="bg-card h-fit shrink-0 self-end rounded-lg px-3 py-2.5"
+          className="h-fit w-fit shrink-0 rounded-lg border border-border bg-card px-3 py-2.5"
         >
           <p className="flex items-center gap-1.5 text-[11px] text-text-muted">
             <Key className="h-3.5 w-3.5" /> API key
